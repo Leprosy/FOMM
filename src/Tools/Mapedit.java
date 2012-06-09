@@ -8,8 +8,12 @@ import RPG.Tile;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 /**
@@ -253,7 +257,11 @@ public class Mapedit extends javax.swing.JFrame {
         Mapedit.Y = evt.getY() / T_HEIGHT;
         
         // Put selected tile in the map
-        Mapedit.map[Mapedit.X][Mapedit.Y].base = (byte)Integer.parseInt(this.BaseIcons_Label.getText());
+        try {
+            Mapedit.map[Mapedit.X][Mapedit.Y].base = (byte)Integer.parseInt(this.BaseIcons_Label.getText());
+        } catch (Exception e) {
+            Mapedit.map[Mapedit.X][Mapedit.Y].base = 0;
+        }
 
         //
         this.Mapview.repaint();
@@ -330,18 +338,35 @@ public class Mapedit extends javax.swing.JFrame {
 }
 
 class Mapview extends javax.swing.JPanel {
+    private BufferedImage base;
+    private BufferedImage wall;
+    private BufferedImage thing;
+
+    public Mapview() {
+        try {
+            this.base = ImageIO.read(getClass().getResource("/Assets/images/base.png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
+        int w = Mapedit.T_WIDTH;
+        int h = Mapedit.T_HEIGHT;
 
         // Draw map
         for (int i = 0; i < Mapedit.M_WIDTH; ++i) {
             for (int j = 0; j < Mapedit.M_HEIGHT; ++j) {
                 g.setColor(Color.yellow);
-                g.drawString(Mapedit.map[i][j].base + "", i * Mapedit.T_WIDTH, j * Mapedit.T_HEIGHT);
+                g.drawString(Mapedit.map[i][j].base + "", i * Mapedit.T_WIDTH + 10, j * Mapedit.T_HEIGHT + 10);
                 
-                g.setColor(new java.awt.Color(Mapedit.map[i][j].base * 60, 0, 0));
-                g.drawRect(i * Mapedit.T_WIDTH, j * Mapedit.T_HEIGHT, Mapedit.T_WIDTH, Mapedit.T_HEIGHT);
+                int base = Mapedit.map[i][j].base;
+                g.drawImage(this.base, 
+                        i * w, j * h, (i+1) * w, (j+1) * h, 
+                        (base%5) * w, (int)(base/5) * h, (base%5 + 1) * w, ((int)(base/5) + 1) * h, 
+                        this);
             }
         }
 
