@@ -465,7 +465,7 @@ public class Mapedit extends javax.swing.JFrame {
     }//GEN-LAST:event_MapviewMouseDragged
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        //Save the fucking map
+        //Open the fucking map
         try {
             //Filechoose dialog
             JFileChooser fc = new JFileChooser();
