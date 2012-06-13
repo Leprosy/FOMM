@@ -16,14 +16,14 @@ public class Tile { // implements Serializable {
     public byte wall;
     public byte thing;
 
-    public final byte IMPASSABLE = 0;
-    public final byte DOOR       = 1;
-    public final byte GRATE      = 2;
-    public final byte WATER      = 3;
-    public final byte DEEPWATER  = 4;
-    public final byte SECRET     = 5;
+    public static final byte IMPASSABLE = 0;
+    public static final byte DOOR       = 1;
+    public static final byte GRATE      = 2;
+    public static final byte WATER      = 3;
+    public static final byte DEEPWATER  = 4;
+    public static final byte SECRET     = 5;
 
-    public final byte FLAGS      = 6;
+    public static final byte FLAGS      = 6;
 
     public boolean[] flags;
 

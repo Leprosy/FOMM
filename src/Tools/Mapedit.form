@@ -192,31 +192,49 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Impassable"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jCheckBox1MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBox2">
           <Properties>
             <Property name="text" type="java.lang.String" value="Door"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jCheckBox2MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBox3">
           <Properties>
             <Property name="text" type="java.lang.String" value="Grate"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jCheckBox3MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBox4">
           <Properties>
             <Property name="text" type="java.lang.String" value="Water"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jCheckBox4MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBox5">
           <Properties>
             <Property name="text" type="java.lang.String" value="Secret"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jCheckBox5MouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="jCheckBox6">
           <Properties>
             <Property name="text" type="java.lang.String" value="Deep water"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jCheckBox6MouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -228,6 +246,7 @@
       </Properties>
       <Events>
         <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MapviewMouseClicked"/>
+        <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="MapviewMouseDragged"/>
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new Mapview()"/>

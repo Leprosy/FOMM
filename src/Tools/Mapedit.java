@@ -29,8 +29,8 @@ public class Mapedit extends javax.swing.JFrame {
     public static Tile[][] map;
     public static int X = 0;
     public static int Y = 0;
-    public static javax.swing.JCheckBox[] flags = new javax.swing.JCheckBox[6];
-    
+    public static javax.swing.JCheckBox[] flags = new javax.swing.JCheckBox[RPG.Tile.FLAGS];
+
     final static int M_WIDTH  = 16;
     final static int M_HEIGHT = 16;
     final static int T_WIDTH  = 20;
@@ -40,17 +40,20 @@ public class Mapedit extends javax.swing.JFrame {
     public Mapedit() {
         initComponents();
 
-        this.map = new Tile[M_HEIGHT][M_WIDTH];
+        Mapedit.map = new Tile[M_HEIGHT][M_WIDTH];
 
         for (int i = 0; i < M_WIDTH; ++i) {
             for (int j = 0; j < M_WIDTH; ++j) {
-                this.map[i][j] = new Tile();
+                Mapedit.map[i][j] = new Tile();
             }
         }
- 
-       /* for (int i = 1; i < 7; ++i) {
-            this.flags[i - 1] = this."jCheckBox" + i;
-        } */
+        
+        Mapedit.flags[0] = this.jCheckBox1;
+        Mapedit.flags[1] = this.jCheckBox2;
+        Mapedit.flags[2] = this.jCheckBox3;
+        Mapedit.flags[3] = this.jCheckBox4;
+        Mapedit.flags[4] = this.jCheckBox5;
+        Mapedit.flags[5] = this.jCheckBox6;
     }
 
     /**
@@ -90,16 +93,46 @@ public class Mapedit extends javax.swing.JFrame {
         Hint.setText(" ");
 
         jCheckBox1.setText("Impassable");
+        jCheckBox1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox1MouseClicked(evt);
+            }
+        });
 
         jCheckBox2.setText("Door");
+        jCheckBox2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox2MouseClicked(evt);
+            }
+        });
 
         jCheckBox3.setText("Grate");
+        jCheckBox3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox3MouseClicked(evt);
+            }
+        });
 
         jCheckBox4.setText("Water");
+        jCheckBox4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox4MouseClicked(evt);
+            }
+        });
 
         jCheckBox5.setText("Secret");
+        jCheckBox5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox5MouseClicked(evt);
+            }
+        });
 
         jCheckBox6.setText("Deep water");
+        jCheckBox6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox6MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout FlagsLayout = new javax.swing.GroupLayout(Flags);
         Flags.setLayout(FlagsLayout);
@@ -143,6 +176,11 @@ public class Mapedit extends javax.swing.JFrame {
         Mapview.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 MapviewMouseClicked(evt);
+            }
+        });
+        Mapview.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                MapviewMouseDragged(evt);
             }
         });
 
@@ -289,8 +327,8 @@ public class Mapedit extends javax.swing.JFrame {
             DataOutputStream os = new DataOutputStream(new FileOutputStream(fc.getSelectedFile().toString()));
 
             //Map meta width, height, start coordinates
-            os.writeByte((byte)this.M_WIDTH);
-            os.writeByte((byte)this.M_HEIGHT);
+            os.writeByte((byte)Mapedit.M_WIDTH);
+            os.writeByte((byte)Mapedit.M_HEIGHT);
             os.writeByte((byte)1);
             os.writeByte((byte)1); /** @todo: fix this! user must _select starting point*/
 
@@ -306,6 +344,11 @@ public class Mapedit extends javax.swing.JFrame {
         Mapedit.X = evt.getX() / T_WIDTH;
         Mapedit.Y = evt.getY() / T_HEIGHT;
         
+        // Flags
+        for (int i = 0; i < Mapedit.flags.length; ++i) {
+            Mapedit.flags[i].setSelected(Mapedit.map[Mapedit.X][Mapedit.Y].flags[i]);
+        }
+
         // Put selected tile in the map
         try {
             Mapedit.map[Mapedit.X][Mapedit.Y].base = (byte)Integer.parseInt(this.BaseIcons_Label.getText());
@@ -333,6 +376,51 @@ public class Mapedit extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.WallIcons_Label.setText("Walls...");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[0] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[0];
+    }//GEN-LAST:event_jCheckBox1MouseClicked
+
+    private void jCheckBox2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox2MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[1] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[1];
+    }//GEN-LAST:event_jCheckBox2MouseClicked
+
+    private void jCheckBox3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox3MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[2] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[2];
+    }//GEN-LAST:event_jCheckBox3MouseClicked
+
+    private void jCheckBox5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox5MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[4] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[4];
+    }//GEN-LAST:event_jCheckBox5MouseClicked
+
+    private void jCheckBox4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox4MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[3] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[3];
+    }//GEN-LAST:event_jCheckBox4MouseClicked
+
+    private void jCheckBox6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox6MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[5] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[5];
+    }//GEN-LAST:event_jCheckBox6MouseClicked
+
+    private void MapviewMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MapviewMouseDragged
+        Mapedit.X = evt.getX() / T_WIDTH;
+        Mapedit.Y = evt.getY() / T_HEIGHT;
+        
+        // Flags
+        for (int i = 0; i < Mapedit.flags.length; ++i) {
+            Mapedit.flags[i].setSelected(Mapedit.map[Mapedit.X][Mapedit.Y].flags[i]);
+        }
+
+        // Put selected tile in the map
+        try {
+            Mapedit.map[Mapedit.X][Mapedit.Y].base = (byte)Integer.parseInt(this.BaseIcons_Label.getText());
+        } catch (Exception e) {}
+        // selected wall...
+        try {
+            Mapedit.map[Mapedit.X][Mapedit.Y].wall = (byte)Integer.parseInt(this.WallIcons_Label.getText());
+        } catch (Exception e) {}
+
+        this.Mapview.repaint();
+    }//GEN-LAST:event_MapviewMouseDragged
 
     /**
      * @param args the command line arguments
@@ -379,7 +467,6 @@ public class Mapedit extends javax.swing.JFrame {
     /**
      *  Domestic methods
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel BaseIcons;
