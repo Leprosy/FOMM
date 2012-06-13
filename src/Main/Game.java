@@ -260,7 +260,9 @@ public class Game extends javax.swing.JFrame {
      * Methods and implementations
      */
     public void update() {
-        /* Colisions, impassables & another conditions of map tiles, in case you're moving */
+        /* 
+         * Colisions, impassables & another conditions of map tiles, in case you're moving 
+         */
         if (Game.dx!=0 || Game.dy!=0) {
             RPG.Tile tmp = Game.map.tile(Game.party.X + Game.dx, Game.party.Y + Game.dy);
 
@@ -275,22 +277,52 @@ public class Game extends javax.swing.JFrame {
             }
         }
 
-        /* Events triggers */
+        /* 
+         * Events triggers 
+         */
+        Object[] ev = Game.map.event(Game.party.X, Game.party.Y);
+
+        if (ev != null) {
+            for (int i = 0; i < ev.length; ++i) {
+                this.triggerEvent((RPG.Event)ev[i]);
+            }
+        }
             
-            
+
+        /*
+         * Everything is set. Let's draw all again...
+         */
         this.Screen.repaint();
     }
 
     public void triggerEvent(RPG.Event ev) {
         switch(ev.code) {
+            /* Shows a message everytime is triggered */
             case RPG.Event.MESSAGE:
                 JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
+                break;
+            /* Shows a message, but just one time */
+            case RPG.Event.MESSAGE_ONETIME:
+                JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
+                ev.alive = false;
+                break;
+            /* Kills an event */
+            case RPG.Event.KILL_EVENT:
+                try {
+                    Game.map.killEvent(Integer.parseInt(ev.parameter));
+                } catch(Exception e) {
+                    this.ohNoCrash(e);
+                }
                 break;
             default:
                 break;
         }        
     }
 
+    public void ohNoCrash(Exception e) {
+        JOptionPane.showMessageDialog(rootPane, "Fatal error : " + e.toString(), "FOMM - Dialog", JOptionPane.ERROR_MESSAGE, null);
+        System.exit(1);
+    }
     /**
      * @param args the command line arguments
      */

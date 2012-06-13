@@ -2,6 +2,7 @@ package RPG;
 
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 
 
 /*
@@ -52,10 +53,12 @@ public class Map {
             }
 
             // Events, triggers
-            this.events = new Event[3];
-            this.events[0] = new Event(0, "This is a demo", 6, 6);
-            this.events[1] = new Event(0, "Are you in the begining?", 0, 0);
-            this.events[2] = new Event(0, "This is the END OF THE WORLD!", 15, 15);
+            this.events = new Event[5];
+            this.events[0] = new Event(0, Event.MESSAGE, "This is a demo", 6, 6);
+            this.events[1] = new Event(1, Event.MESSAGE, "This is still a demo(multi-triggers)", 6, 6);
+            this.events[2] = new Event(2, Event.MESSAGE_ONETIME, "Are you in the begining?", 0, 0);
+            this.events[3] = new Event(3, Event.MESSAGE_ONETIME, "This is the END OF THE WORLD!", 15, 15);
+            this.events[4] = new Event(4, Event.KILL_EVENT, "0", 15, 15);
 
             // Dispose all the resources after using them
             os.close();
@@ -70,6 +73,30 @@ public class Map {
             return this.tiles[i][j];
         } catch(Exception e) {
             return null;
+        }
+    }
+
+    public Object[] event(int i, int j) {
+        ArrayList ev = new ArrayList();
+
+        for (int a = 0; a < this.events.length; ++a) {
+            if (this.events[a].X == i && this.events[a].Y == j && this.events[a].alive) { /** @todo: orientation event */
+                ev.add(this.events[a]);
+            }
+        }
+
+        if (ev.isEmpty()) {
+            return null;
+        } else {
+            return ev.toArray();
+        }
+    }
+
+    public void killEvent(int i) {
+        for (int a = 0; a < this.events.length; ++a) {
+            if (this.events[a].id == i) {
+                this.events[a].alive = false;
+            }
         }
     }
 }
