@@ -17,6 +17,8 @@ public class Map {
     protected Tile[][] tiles;
     public int startX;
     public int startY;
+    public int width;
+    public int height;
 
     public Map(String file) {
         try {
@@ -26,12 +28,15 @@ public class Map {
             int W = os.readByte();
             int H = os.readByte();
 
+            this.width  = W;
+            this.height = H;
+
             this.tiles = new Tile[W][H];
 
             this.startX = os.readByte();
             this.startY = os.readByte();
 
-            // Save bytes of map
+            // Load bytes of map
             for (int i = 0; i < W; ++i) {
                 for (int j = 0; j < H; ++j) {
                     this.tiles[i][j] = new RPG.Tile();
@@ -53,7 +58,7 @@ public class Map {
         }
     }
 
-    public void render() {
-
+    public Tile tile(int i, int j) {
+        return this.tiles[i][j];
     }
 }
