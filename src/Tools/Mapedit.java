@@ -73,6 +73,10 @@ public class Mapedit extends javax.swing.JFrame {
         Mapview = new Mapview();
         BaseIcons = new javax.swing.JLabel();
         BaseIcons_Label = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        WallIcons = new javax.swing.JLabel();
+        WallIcons_Label = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         saveAsMenuItem = new javax.swing.JMenuItem();
@@ -154,7 +158,7 @@ public class Mapedit extends javax.swing.JFrame {
         );
 
         BaseIcons.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/images/base.png"))); // NOI18N
-        BaseIcons.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        BaseIcons.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         BaseIcons.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BaseIconsMouseClicked(evt);
@@ -162,6 +166,30 @@ public class Mapedit extends javax.swing.JFrame {
         });
 
         BaseIcons_Label.setText("Bases...");
+
+        jButton1.setText("Select");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        WallIcons.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/images/wall.png"))); // NOI18N
+        WallIcons.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        WallIcons.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                WallIconsMouseClicked(evt);
+            }
+        });
+
+        WallIcons_Label.setText("Walls...");
+
+        jButton2.setText("Select");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -196,31 +224,53 @@ public class Mapedit extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BaseIcons)
-                        .addGap(18, 18, 18)
-                        .addComponent(BaseIcons_Label)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(Mapview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Flags, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(Flags, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(BaseIcons)
+                                .addGap(18, 18, 18)
+                                .addComponent(BaseIcons_Label)
+                                .addGap(3, 3, 3)
+                                .addComponent(jButton1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(WallIcons)
+                                .addGap(18, 18, 18)
+                                .addComponent(WallIcons_Label)
+                                .addGap(3, 3, 3)
+                                .addComponent(jButton2)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(Flags, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Mapview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Flags, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(Mapview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(BaseIcons)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(BaseIcons))
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(BaseIcons_Label)
+                            .addComponent(jButton1))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(WallIcons)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(BaseIcons_Label)))
-                .addContainerGap(96, Short.MAX_VALUE))
+                        .addGap(4, 4, 4)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(WallIcons_Label)
+                            .addComponent(jButton2))))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         pack();
@@ -259,17 +309,30 @@ public class Mapedit extends javax.swing.JFrame {
         // Put selected tile in the map
         try {
             Mapedit.map[Mapedit.X][Mapedit.Y].base = (byte)Integer.parseInt(this.BaseIcons_Label.getText());
-        } catch (Exception e) {
-            Mapedit.map[Mapedit.X][Mapedit.Y].base = 0;
-        }
+        } catch (Exception e) {}
+        // selected wall...
+        try {
+            Mapedit.map[Mapedit.X][Mapedit.Y].wall = (byte)Integer.parseInt(this.WallIcons_Label.getText());
+        } catch (Exception e) {}
 
-        //
         this.Mapview.repaint();
     }//GEN-LAST:event_MapviewMouseClicked
 
     private void BaseIconsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_BaseIconsMouseClicked
         this.BaseIcons_Label.setText(evt.getX() / Mapedit.T_WIDTH + 5 * (evt.getY() / Mapedit.T_HEIGHT) + "");
     }//GEN-LAST:event_BaseIconsMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.BaseIcons_Label.setText("Bases...");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void WallIconsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_WallIconsMouseClicked
+        this.WallIcons_Label.setText(evt.getX() / Mapedit.T_WIDTH + 5 * (evt.getY() / Mapedit.T_HEIGHT) + "");
+    }//GEN-LAST:event_WallIconsMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.WallIcons_Label.setText("Walls...");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -324,8 +387,12 @@ public class Mapedit extends javax.swing.JFrame {
     private javax.swing.JPanel Flags;
     private javax.swing.JTextField Hint;
     private javax.swing.JPanel Mapview;
+    private javax.swing.JLabel WallIcons;
+    private javax.swing.JLabel WallIcons_Label;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
@@ -345,6 +412,7 @@ class Mapview extends javax.swing.JPanel {
     public Mapview() {
         try {
             this.base = ImageIO.read(getClass().getResource("/Assets/images/base.png"));
+            this.wall = ImageIO.read(getClass().getResource("/Assets/images/wall.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -363,9 +431,14 @@ class Mapview extends javax.swing.JPanel {
                 g.drawString(Mapedit.map[i][j].base + "", i * Mapedit.T_WIDTH + 10, j * Mapedit.T_HEIGHT + 10);
                 
                 int base = Mapedit.map[i][j].base;
+                int wall = Mapedit.map[i][j].wall;
                 g.drawImage(this.base, 
                         i * w, j * h, (i+1) * w, (j+1) * h, 
                         (base%5) * w, (int)(base/5) * h, (base%5 + 1) * w, ((int)(base/5) + 1) * h, 
+                        this);
+                g.drawImage(this.wall, 
+                        i * w, j * h, (i+1) * w, (j+1) * h, 
+                        (wall%5) * w, (int)(wall/5) * h, (wall%5 + 1) * w, ((int)(wall/5) + 1) * h, 
                         this);
             }
         }
