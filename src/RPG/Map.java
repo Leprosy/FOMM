@@ -34,6 +34,7 @@ public class Map {
             // Save bytes of map
             for (int i = 0; i < W; ++i) {
                 for (int j = 0; j < H; ++j) {
+                    this.tiles[i][j] = new RPG.Tile();
                     this.tiles[i][j].base  = os.readByte();
                     this.tiles[i][j].wall  = os.readByte();
                     this.tiles[i][j].thing = os.readByte();
