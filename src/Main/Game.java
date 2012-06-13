@@ -4,8 +4,10 @@
  */
 package Main;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,12 +19,18 @@ public class Game extends javax.swing.JFrame {
      * Creates new form Game
      */
     public static RPG.Map map;
+    public static RPG.Party party;
+    public static short dx;
+    public static short dy;
+    
+    public final static short T_SIZE = 20;
 
     public Game() {
         initComponents();
 
         /* Init */
-        Game.map = new RPG.Map("map1");
+        Game.map   = new RPG.Map("map1");
+        Game.party = new RPG.Party(Game.map.startX, Game.map.startY);
     }
 
     /**
@@ -34,13 +42,14 @@ public class Game extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Screen = new javax.swing.JPanel();
+        Screen = new Mapview();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -65,20 +74,47 @@ public class Game extends javax.swing.JFrame {
         );
         ScreenLayout.setVerticalGroup(
             ScreenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 312, Short.MAX_VALUE)
+            .addGap(0, 331, Short.MAX_VALUE)
         );
 
         jButton1.setText("\\");
 
             jButton2.setText("^");
+            jButton2.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton2ActionPerformed(evt);
+                }
+            });
 
             jButton3.setText("/");
 
-            jButton4.setText("<<");
+            jButton4.setText("<");
+            jButton4.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton4ActionPerformed(evt);
+                }
+            });
 
             jButton5.setText("V");
+            jButton5.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton5ActionPerformed(evt);
+                }
+            });
 
-            jButton6.setText(">>");
+            jButton6.setText(">");
+            jButton6.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton6ActionPerformed(evt);
+                }
+            });
+
+            jButton7.setText("Action");
+            jButton7.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton7ActionPerformed(evt);
+                }
+            });
 
             fileMenu.setMnemonic('f');
             fileMenu.setText("File");
@@ -116,6 +152,11 @@ public class Game extends javax.swing.JFrame {
 
             aboutMenuItem.setMnemonic('a');
             aboutMenuItem.setText("About");
+            aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    aboutMenuItemActionPerformed(evt);
+                }
+            });
             helpMenu.add(aboutMenuItem);
 
             menuBar.add(helpMenu);
@@ -129,21 +170,27 @@ public class Game extends javax.swing.JFrame {
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(Screen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 1, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(9, 9, 9))
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGap(9, 9, 9))
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addContainerGap())))
             );
             layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,10 +198,9 @@ public class Game extends javax.swing.JFrame {
                     .addContainerGap()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(Screen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addContainerGap(96, Short.MAX_VALUE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addGap(0, 0, Short.MAX_VALUE)
+                            .addComponent(jButton7)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -164,7 +210,10 @@ public class Game extends javax.swing.JFrame {
                                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(7, 7, 7))))
+                            .addGap(7, 7, 7))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(Screen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap(77, Short.MAX_VALUE))))
             );
 
             pack();
@@ -173,6 +222,74 @@ public class Game extends javax.swing.JFrame {
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Game.dy = -1;
+        Game.dx = 0;
+        this.update();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        Game.dy = 1;
+        Game.dx = 0;
+        this.update();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        Game.dy = 0;
+        Game.dx = -1;
+        this.update();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        Game.dy = 0;
+        Game.dx = 1;
+        this.update();
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        //Code for "space bar"
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        JOptionPane.showMessageDialog(rootPane, "Fans of Might 6 Magic", "FOMM - About", JOptionPane.INFORMATION_MESSAGE, null);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+
+    /**
+     * Methods and implementations
+     */
+    public void update() {
+        /* Colisions, impassables & another conditions of map tiles, in case you're moving */
+        if (Game.dx!=0 || Game.dy!=0) {
+            RPG.Tile tmp = Game.map.tile(Game.party.X + Game.dx, Game.party.Y + Game.dy);
+
+            if (tmp != null) {
+                if (!tmp.flags[RPG.Tile.IMPASSABLE]) { // Tile is impassable
+                    Game.party.X += Game.dx;
+                    Game.party.Y += Game.dy;
+
+                    Game.dx = 0;
+                    Game.dy = 0;
+                }
+            }
+        }
+
+        /* Events triggers */
+            
+            
+        this.Screen.repaint();
+    }
+
+    public void triggerEvent(RPG.Event ev) {
+        switch(ev.code) {
+            case RPG.Event.MESSAGE:
+                JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
+                break;
+            default:
+                break;
+        }        
+    }
 
     /**
      * @param args the command line arguments
@@ -228,6 +345,7 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
@@ -237,13 +355,14 @@ public class Game extends javax.swing.JFrame {
 
 
 /* Class for graphics */
-class Map extends javax.swing.JPanel {
+class Mapview extends javax.swing.JPanel {
     private BufferedImage base;
     private BufferedImage wall;
     private BufferedImage thing;
 
-    public Map() {
+    public Mapview() {
         try {
+            /* Load tiles */
             this.base = ImageIO.read(getClass().getResource("/Assets/images/base.png"));
             this.wall = ImageIO.read(getClass().getResource("/Assets/images/wall.png"));
         } catch (Exception e) {
@@ -254,6 +373,35 @@ class Map extends javax.swing.JPanel {
     @Override
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
-        
+
+        this.renderMap(Game.map, g);
+        this.renderParty(Game.party, g);
+    }
+    
+    public void renderMap(RPG.Map M, java.awt.Graphics g) {
+        /* Render map */
+        int w = Game.map.width;
+        int h = Game.map.height;
+       
+        for (int i = 0; i < w; ++i) {
+            for (int j = 0; j < h; ++j) {                
+                RPG.Tile t = Game.map.tile(i, j);
+
+                g.drawImage(this.base, 
+                        i * Game.T_SIZE, j * Game.T_SIZE, (i+1) * Game.T_SIZE, (j+1) * Game.T_SIZE, 
+                        (t.base%5) * Game.T_SIZE, (int)(t.base/5) * Game.T_SIZE, (t.base%5 + 1) * Game.T_SIZE, ((int)(t.base/5) + 1) * Game.T_SIZE, 
+                        this);
+                g.drawImage(this.wall, 
+                        i * Game.T_SIZE, j * Game.T_SIZE, (i+1) * Game.T_SIZE, (j+1) * Game.T_SIZE, 
+                        (t.wall%5) * Game.T_SIZE, (int)(t.wall/5) * Game.T_SIZE, (t.wall%5 + 1) * Game.T_SIZE, ((int)(t.wall/5) + 1) * Game.T_SIZE, 
+                        this);
+            }
+        }
+    }
+
+    public void renderParty(RPG.Party P, java.awt.Graphics g) {
+        g.setColor(Color.RED);
+
+        g.drawString("*", (Game.T_SIZE * P.X + 8), (Game.T_SIZE * P.Y + 15));
     }
 }

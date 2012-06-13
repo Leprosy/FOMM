@@ -9,10 +9,10 @@ package RPG;
  * @author mrojas
  */
 public class Party {
-    public int x, y;
+    public int X, Y;
 
     public Party(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.X = x;
+        this.Y = y;
     }
 }

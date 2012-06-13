@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 public class Map {
 
     protected Tile[][] tiles;
+    protected Event[] events;
     public int startX;
     public int startY;
     public int width;
@@ -50,6 +51,12 @@ public class Map {
                 }
             }
 
+            // Events, triggers
+            this.events = new Event[3];
+            this.events[0] = new Event(0, "This is a demo", 6, 6);
+            this.events[1] = new Event(0, "Are you in the begining?", 0, 0);
+            this.events[2] = new Event(0, "This is the END OF THE WORLD!", 15, 15);
+
             // Dispose all the resources after using them
             os.close();
 
@@ -59,6 +66,10 @@ public class Map {
     }
 
     public Tile tile(int i, int j) {
-        return this.tiles[i][j];
+        try {
+            return this.tiles[i][j];
+        } catch(Exception e) {
+            return null;
+        }
     }
 }
