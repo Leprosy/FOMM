@@ -7,7 +7,9 @@ package Tools;
 import RPG.Tile;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
@@ -25,6 +27,8 @@ public class Mapedit extends javax.swing.JFrame {
     public static Tile[][] map;
     public static int X = 0;
     public static int Y = 0;
+    public static int startX = 0;
+    public static int startY = 0;
     public static javax.swing.JCheckBox[] flags = new javax.swing.JCheckBox[RPG.Tile.FLAGS];
 
     final static int M_WIDTH  = 16;
@@ -69,6 +73,8 @@ public class Mapedit extends javax.swing.JFrame {
         jCheckBox4 = new javax.swing.JCheckBox();
         jCheckBox5 = new javax.swing.JCheckBox();
         jCheckBox6 = new javax.swing.JCheckBox();
+        jTextField1 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
         Mapview = new Mapview();
         BaseIcons = new javax.swing.JLabel();
         BaseIcons_Label = new javax.swing.JLabel();
@@ -78,11 +84,13 @@ public class Mapedit extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fans of Might & Magic - Mapedit");
+        setResizable(false);
 
         Flags.setBorder(javax.swing.BorderFactory.createTitledBorder("Flags"));
 
@@ -130,6 +138,15 @@ public class Mapedit extends javax.swing.JFrame {
             }
         });
 
+        jTextField1.setText("0,0");
+
+        jButton3.setText("Set Start");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout FlagsLayout = new javax.swing.GroupLayout(Flags);
         Flags.setLayout(FlagsLayout);
         FlagsLayout.setHorizontalGroup(
@@ -146,7 +163,12 @@ public class Mapedit extends javax.swing.JFrame {
                             .addComponent(jCheckBox4)
                             .addComponent(jCheckBox5)
                             .addComponent(jCheckBox6))
-                        .addGap(0, 60, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(FlagsLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         FlagsLayout.setVerticalGroup(
@@ -163,9 +185,13 @@ public class Mapedit extends javax.swing.JFrame {
                 .addComponent(jCheckBox4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(FlagsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(42, 42, 42)
                 .addComponent(Hint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(127, 127, 127))
+                .addGap(30, 30, 30))
         );
 
         Mapview.setBackground(new java.awt.Color(1, 1, 1));
@@ -228,6 +254,14 @@ public class Mapedit extends javax.swing.JFrame {
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
 
+        jMenuItem1.setText("Open a crap");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItem1);
+
         saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Save this crap");
         saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -284,7 +318,7 @@ public class Mapedit extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(Flags, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Flags, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(Mapview, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -325,9 +359,21 @@ public class Mapedit extends javax.swing.JFrame {
             //Map meta width, height, start coordinates
             os.writeByte((byte)Mapedit.M_WIDTH);
             os.writeByte((byte)Mapedit.M_HEIGHT);
-            os.writeByte((byte)1);
-            os.writeByte((byte)1); /** @todo: fix this! user must _select starting point*/
+            os.writeByte((byte)Mapedit.startX);
+            os.writeByte((byte)Mapedit.startY); /** @todo: fix this! user must _select starting point*/
 
+            // Save bytes of map
+            for (int i = 0; i < Mapedit.M_WIDTH; ++i) {
+                for (int j = 0; j < Mapedit.M_HEIGHT; ++j) {
+                    os.writeByte(Mapedit.map[i][j].base);
+                    os.writeByte(Mapedit.map[i][j].wall);
+                    os.writeByte(Mapedit.map[i][j].thing);
+
+                    for (int k = 0; k < Mapedit.map[i][j].flags.length; ++k) {
+                        os.writeBoolean(Mapedit.map[i][j].flags[k]);
+                    }
+                }
+            }
 
             // Close
             os.close();
@@ -418,6 +464,50 @@ public class Mapedit extends javax.swing.JFrame {
         this.Mapview.repaint();
     }//GEN-LAST:event_MapviewMouseDragged
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        //Save the fucking map
+        try {
+            //Filechoose dialog
+            JFileChooser fc = new JFileChooser();
+            fc.showDialog(this, "Open this crap!");
+            DataInputStream os = new DataInputStream(new FileInputStream(fc.getSelectedFile().toString()));
+
+            // Fuck off first 4 bytes, we already know which they are 
+            /** @todo : this is nonsense */
+            os.readByte();
+            os.readByte();
+            Mapedit.startX = os.readByte();
+            Mapedit.startY = os.readByte();
+
+            // Save bytes of map
+            for (int i = 0; i < Mapedit.M_WIDTH; ++i) {
+                for (int j = 0; j < Mapedit.M_HEIGHT; ++j) {
+                    Mapedit.map[i][j].base  = os.readByte();
+                    Mapedit.map[i][j].wall  = os.readByte();
+                    Mapedit.map[i][j].thing = os.readByte();
+
+                    for (int k = 0; k < Mapedit.map[i][j].flags.length; ++k) {
+                        Mapedit.map[i][j].flags[k] = os.readBoolean();
+                    }
+                }
+            }
+
+            // Close
+            os.close();
+            
+            this.Mapview.repaint();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        String[] coords = this.jTextField1.getText().split(",");
+        Mapedit.startX = Integer.parseInt(coords[0]);
+        Mapedit.startY = Integer.parseInt(coords[1]);
+        this.Mapview.repaint();
+    }//GEN-LAST:event_jButton3MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -476,12 +566,15 @@ public class Mapedit extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JCheckBox jCheckBox6;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem saveAsMenuItem;
     // End of variables declaration//GEN-END:variables
@@ -525,6 +618,10 @@ class Mapview extends javax.swing.JPanel {
                         this);
             }
         }
+
+        //Start and others indicators?
+        g.setColor(Color.RED);
+        g.drawString("X", Mapedit.startX * Mapedit.T_WIDTH + 5, Mapedit.startY * Mapedit.T_HEIGHT + 12);
 
         //Cursor
         g.setColor(Color.WHITE);
