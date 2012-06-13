@@ -472,7 +472,7 @@ public class Mapedit extends javax.swing.JFrame {
             fc.showDialog(this, "Open this crap!");
             DataInputStream os = new DataInputStream(new FileInputStream(fc.getSelectedFile().toString()));
 
-            // Fuck off first 4 bytes, we already know which they are 
+            // Fuck off first 2 bytes, we already know which they are 
             /** @todo : this is nonsense */
             os.readByte();
             os.readByte();
@@ -603,9 +603,6 @@ class Mapview extends javax.swing.JPanel {
         // Draw map
         for (int i = 0; i < Mapedit.M_WIDTH; ++i) {
             for (int j = 0; j < Mapedit.M_HEIGHT; ++j) {
-                g.setColor(Color.yellow);
-                g.drawString(Mapedit.map[i][j].base + "", i * Mapedit.T_WIDTH + 10, j * Mapedit.T_HEIGHT + 10);
-                
                 int base = Mapedit.map[i][j].base;
                 int wall = Mapedit.map[i][j].wall;
                 g.drawImage(this.base, 
