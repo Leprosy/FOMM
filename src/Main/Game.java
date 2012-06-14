@@ -352,11 +352,23 @@ public class Game extends javax.swing.JFrame {
                 /* Confirm */
                 case RPG.Event.CONFIRM:
                     int j = JOptionPane.showConfirmDialog(rootPane, ev.parameter);
+
                     if (j == 0) {
                         data = "ok";
                     } else {
                         data = "no";
                     }
+
+                    break;
+
+                /* Input */
+                case RPG.Event.INPUT:
+                    data = JOptionPane.showInputDialog(rootPane, ev.parameter);
+
+                    if (data==null) {
+                        data = "";
+                    }
+
                     break;
 
                 /* IF */

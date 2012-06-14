@@ -53,7 +53,8 @@ public class Map {
             }
 
             // Events, triggers
-            this.events = new Event[7];
+            // Format : [x][y][code][param]
+            this.events = new Event[12];
             this.events[0] = new Event(0, Event.MESSAGE, "Are you in the begining?", 0, 0);
             this.events[1] = new Event(0, Event.MESSAGE_ONETIME, "This is the END OF THE WORLD!", 15, 15);
 
@@ -62,6 +63,13 @@ public class Map {
             this.events[4] = new Event(2, Event.MESSAGE, "You're sure!", 6, 6);
             this.events[5] = new Event(3, Event.EXIT, "", 6, 6);
             this.events[6] = new Event(4, Event.MESSAGE, "Come back when you're sure... :(", 6, 6);
+            
+            this.events[7] = new Event(0, Event.INPUT, "Tell me the password...", 7, 6);
+            this.events[8] = new Event(1, Event.IF, "rosebud;2;4", 7, 6);
+            this.events[9] = new Event(2, Event.MESSAGE, "Cool!", 7, 6);
+            this.events[10] = new Event(3, Event.EXIT, "", 7, 6);
+            this.events[11] = new Event(4, Event.MESSAGE, "Incorrect!", 7, 6);
+            
 
             // Dispose all the resources after using them
             os.close();
