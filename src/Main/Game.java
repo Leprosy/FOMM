@@ -78,6 +78,11 @@ public class Game extends javax.swing.JFrame {
         );
 
         jButton1.setText("\\");
+            jButton1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton1ActionPerformed(evt);
+                }
+            });
 
             jButton2.setText("^");
             jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +92,11 @@ public class Game extends javax.swing.JFrame {
             });
 
             jButton3.setText("/");
+            jButton3.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton3ActionPerformed(evt);
+                }
+            });
 
             jButton4.setText("<");
             jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -255,6 +265,18 @@ public class Game extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(rootPane, "Fans of Might 6 Magic", "FOMM - About", JOptionPane.INFORMATION_MESSAGE, null);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Game.party.left();
+        this.Screen.repaint();
+        /** @todo: This action can't trigger monster/time update */
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Game.party.right();
+        this.Screen.repaint();
+        /** @todo: Same deal with previous event */
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     /**
      * Methods and implementations
@@ -283,11 +305,8 @@ public class Game extends javax.swing.JFrame {
         Object[] ev = Game.map.event(Game.party.X, Game.party.Y);
 
         if (ev != null) {
-            for (int i = 0; i < ev.length; ++i) {
-                this.triggerEvent((RPG.Event)ev[i]);
-            }
+            this.triggerEvents(ev);
         }
-            
 
         /*
          * Everything is set. Let's draw all again...
@@ -295,28 +314,60 @@ public class Game extends javax.swing.JFrame {
         this.Screen.repaint();
     }
 
-    public void triggerEvent(RPG.Event ev) {
-        switch(ev.code) {
-            /* Shows a message everytime is triggered */
-            case RPG.Event.MESSAGE:
-                JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
-                break;
-            /* Shows a message, but just one time */
-            case RPG.Event.MESSAGE_ONETIME:
-                JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
-                ev.alive = false;
-                break;
-            /* Kills an event */
-            case RPG.Event.KILL_EVENT:
-                try {
-                    Game.map.killEvent(Integer.parseInt(ev.parameter));
-                } catch(Exception e) {
-                    this.ohNoCrash(e);
-                }
-                break;
-            default:
-                break;
-        }        
+    public void triggerEvents(Object[] evs) {
+        String data = "";
+        
+        for (int i = 0; i < evs.length; ++i) {
+
+            RPG.Event ev = (RPG.Event)evs[i];
+
+            switch(ev.code) {
+
+                /* Shows a message everytime is triggered */
+                case RPG.Event.MESSAGE:
+                    JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
+                    break;
+
+                /* Shows a message, but just one time */
+                case RPG.Event.MESSAGE_ONETIME:
+                    JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
+                    ev.alive = false;
+                    break;
+
+                /* Kills an event */
+                case RPG.Event.KILL_EVENT:
+                    try {
+                        Game.map.killEvent(Integer.parseInt(ev.parameter));
+                    } catch(Exception e) {
+                        this.ohNoCrash(e);
+                    }
+
+                    break;
+
+                /* Confirm */
+                case RPG.Event.CONFIRM:
+                    int j = JOptionPane.showConfirmDialog(rootPane, ev.parameter);
+                    if (j == 0) {
+                        data = "ok";
+                    } else {
+                        data = "no";
+                    }
+                    break;
+
+                /* IF */
+                case RPG.Event.IF:
+                    break;
+
+                /* Change map */
+                case RPG.Event.CHANGE_MAP:
+                    Game.map = new RPG.Map("map" + Integer.parseInt(ev.parameter));
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        
     }
 
     public void ohNoCrash(Exception e) {
@@ -432,8 +483,28 @@ class Mapview extends javax.swing.JPanel {
     }
 
     public void renderParty(RPG.Party P, java.awt.Graphics g) {
-        g.setColor(Color.RED);
+        g.setColor(Color.YELLOW);
 
-        g.drawString("*", (Game.T_SIZE * P.X + 8), (Game.T_SIZE * P.Y + 15));
+        String pt = "";
+
+        switch(P.facing) {
+            case 0:
+                pt = "^";
+                break;
+            case 1:
+                pt = ">";
+                break;
+            case 2:
+                pt = "v";
+                break;
+            case 3:
+                pt = "<";
+                break;
+            default:
+                pt = "?";
+                break;
+        }
+
+        g.drawString(pt, (Game.T_SIZE * P.X + 8), (Game.T_SIZE * P.Y + 15));
     }
 }
