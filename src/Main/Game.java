@@ -321,6 +321,11 @@ public class Game extends javax.swing.JFrame {
 
             RPG.Event ev = (RPG.Event)evs[i];
 
+            System.out.println("event : " + i);
+            System.out.println("code  : " + ev.code);
+            System.out.println("data  : " + data);
+            System.out.println("param : " + ev.parameter + "\n");
+
             switch(ev.code) {
 
                 /* Shows a message everytime is triggered */
@@ -356,6 +361,23 @@ public class Game extends javax.swing.JFrame {
 
                 /* IF */
                 case RPG.Event.IF:
+                    String[] thrice = ev.parameter.split(";");
+
+                    if (thrice.length != 3) {
+                        this.ohNoCrash(new Exception("IF event trigger malformed parameter"));
+                    }
+
+                    if (data.equals(thrice[0])) {
+                        i = Integer.parseInt(thrice[1]) - 1;
+                    } else {
+                        i = Integer.parseInt(thrice[2]) - 1;
+                    }
+
+                    break;
+
+                /* Exit script */
+                case RPG.Event.EXIT:
+                    data = "exit";
                     break;
 
                 /* Change map */
@@ -365,6 +387,11 @@ public class Game extends javax.swing.JFrame {
 
                 default:
                     break;
+            }
+
+            /* Exit script? */
+            if (data.equals("exit")) {
+                break;
             }
         }
         
