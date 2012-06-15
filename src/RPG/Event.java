@@ -22,12 +22,15 @@ public class Event {
     public static final int CONFIRM = 3;
     public static final int INPUT = 4;
     public static final int IF = 5;
-    public static final int EXIT = 6;
+    public static final int TREASURE = 6;
+    public static final int EXPERIENCE_PARTY = 7;
+
 
     /* public static final int TELEPORT = 3;
     public static final int SEARCH_TREASURE = 4;
     public static final int SEARCH_TRAP = 5; */
     public static final int CHANGE_MAP = 9;
+    public static final int EXIT = 10;
     
 
     public Event(int id, int code, String par, int x, int y) {

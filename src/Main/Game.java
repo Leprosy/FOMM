@@ -320,11 +320,12 @@ public class Game extends javax.swing.JFrame {
         for (int i = 0; i < evs.length; ++i) {
 
             RPG.Event ev = (RPG.Event)evs[i];
+            String[] thrice;
 
             System.out.println("event : " + i);
             System.out.println("code  : " + ev.code);
             System.out.println("data  : " + data);
-            System.out.println("param : " + ev.parameter + "\n");
+            System.out.println("param : " + ev.parameter + "\n");            
 
             switch(ev.code) {
 
@@ -373,7 +374,7 @@ public class Game extends javax.swing.JFrame {
 
                 /* IF */
                 case RPG.Event.IF:
-                    String[] thrice = ev.parameter.split(";");
+                    thrice = ev.parameter.split(";");
 
                     if (thrice.length != 3) {
                         this.ohNoCrash(new Exception("IF event trigger malformed parameter"));
@@ -385,6 +386,29 @@ public class Game extends javax.swing.JFrame {
                         i = Integer.parseInt(thrice[2]) - 1;
                     }
 
+                    break;
+
+                /* Give some treasure (gold;gems;food) */
+                case RPG.Event.TREASURE:
+                    thrice = ev.parameter.split(";");
+
+                    if (thrice.length != 3) {
+                        this.ohNoCrash(new Exception("TREASURE event trigger malformed parameter"));
+                    }
+
+                    Game.party.gold += Integer.parseInt(thrice[0]);
+                    Game.party.gems += Integer.parseInt(thrice[1]);
+                    Game.party.food += Integer.parseInt(thrice[2]);
+
+                    JOptionPane.showMessageDialog(rootPane, "Party found:\n" + 
+                            thrice[0] + " gold\n" +
+                            thrice[1] + " gems\n" +
+                            "\n");
+
+                    break;
+
+                case RPG.Event.EXPERIENCE_PARTY:
+                    JOptionPane.showMessageDialog(rootPane, ev.parameter + " experience(each)");
                     break;
 
                 /* Exit script */
@@ -498,6 +522,12 @@ class Mapview extends javax.swing.JPanel {
 
         this.renderMap(Game.map, g);
         this.renderParty(Game.party, g);
+
+        /* Gold, food and stuff */
+        g.setColor(Color.ORANGE);
+        g.drawString("Gold : " + Game.party.gold, 10, 10);
+        g.drawString("Gems : " + Game.party.gems, 10, 20);
+        g.drawString("Food : " + Game.party.food, 10, 30);
     }
     
     public void renderMap(RPG.Map M, java.awt.Graphics g) {

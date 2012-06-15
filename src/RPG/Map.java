@@ -60,7 +60,7 @@ public class Map {
 
             this.events[2] = new Event(0, Event.CONFIRM, "Are you sure?", 6, 6);
             this.events[3] = new Event(1, Event.IF, "ok;2;4", 6, 6);
-            this.events[4] = new Event(2, Event.MESSAGE, "You're sure!", 6, 6);
+            this.events[4] = new Event(2, Event.TREASURE, "3000;100;0", 6, 6);
             this.events[5] = new Event(3, Event.EXIT, "", 6, 6);
             this.events[6] = new Event(4, Event.MESSAGE, "Come back when you're sure... :(", 6, 6);
             

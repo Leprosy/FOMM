@@ -11,13 +11,22 @@ package RPG;
 public class Party {
     public int X, Y;
     public short facing;
-    public short money;
+    public short gold;
+    public short gems;
     public short food;
+
+    public Character[] chars;
 
     public Party(int x, int y) {
         this.X = x;
         this.Y = y;
         this.facing = 0;
+        this.gold = 2000;
+        this.gems = 30;
+
+        this.chars = new Character[2];
+        this.chars[0] = new Character(1);
+        this.chars[1] = new Character(2);
     }
 
     public void right() {
