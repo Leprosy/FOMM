@@ -49,7 +49,7 @@ public class Party {
         this.facing--;
         
         if (this.facing == -1) {
-            this.facing = 0;
+            this.facing = 3;
         }
     }
 }
