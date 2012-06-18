@@ -395,6 +395,18 @@ public class Game extends javax.swing.JFrame {
             System.out.println("param : " + ev.parameter + "\n");            
 
             switch(ev.code) {
+                /* Kills an event */
+                case RPG.Event.KILL_EVENT:
+                    try {
+                        Game.map.killEvent(Integer.parseInt(ev.parameter));
+                    } catch(Exception e) {
+                        this.ohNoCrash(e);
+                    }
+
+                    break;
+
+
+
 
                 /* Shows a message everytime is triggered */
                 case RPG.Event.MESSAGE:
@@ -407,15 +419,17 @@ public class Game extends javax.swing.JFrame {
                     ev.alive = false;
                     break;
 
-                /* Kills an event */
-                case RPG.Event.KILL_EVENT:
-                    try {
-                        Game.map.killEvent(Integer.parseInt(ev.parameter));
-                    } catch(Exception e) {
-                        this.ohNoCrash(e);
+                /* Show a NPC talking */
+                case RPG.Event.MESSAGE_NPC:
+                    params = ev.parameter.split(";");
+
+                    if (params.length != 2) {
+                        this.ohNoCrash(new Exception("NPC_MESSAGE event trigger malformed parameter : " + ev.parameter));
                     }
 
+                    JOptionPane.showMessageDialog(rootPane, params[1], params[0], JOptionPane.INFORMATION_MESSAGE);
                     break;
+
 
                 /* Confirm */
                 case RPG.Event.CONFIRM:
@@ -444,7 +458,7 @@ public class Game extends javax.swing.JFrame {
                     params = ev.parameter.split(";");
 
                     if (params.length != 3) {
-                        this.ohNoCrash(new Exception("IF event trigger malformed parameter"));
+                        this.ohNoCrash(new Exception("IF event trigger malformed parameter : " + ev.parameter));
                     }
 
                     if (data.equals(params[0])) {
@@ -455,33 +469,15 @@ public class Game extends javax.swing.JFrame {
 
                     break;
 
-                /* IF quest exists */
-                case RPG.Event.IF_QUEST:
-                    params = ev.parameter.split(";");
 
-                    if (params.length != 3) {
-                        this.ohNoCrash(new Exception("IF_QUEST event trigger malformed parameter"));
-                    }
 
-                    if (Game.party.hasQuest(Integer.parseInt(params[0]))) {
-                        i = Integer.parseInt(params[1]) - 1;
-                    } else {
-                        i = Integer.parseInt(params[2]) - 1;
-                    }
-
-                    break;
-
-                /* Complete a quest */
-                case RPG.Event.END_QUEST:
-                    Game.party.removeQuest(Integer.parseInt(ev.parameter));
-                    break;
 
                 /* Give some treasure (gold;gems;food) */
                 case RPG.Event.TREASURE:
                     params = ev.parameter.split(";");
 
                     if (params.length != 3) {
-                        this.ohNoCrash(new Exception("TREASURE event trigger malformed parameter"));
+                        this.ohNoCrash(new Exception("TREASURE event trigger malformed parameter : " + ev.parameter));
                     }
 
                     Game.party.gold += Integer.parseInt(params[0]);
@@ -500,32 +496,92 @@ public class Game extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootPane, ev.parameter + " experience(each)");
                     break;
 
+                /* Give some experience to one party member */
+                case RPG.Event.EXPERIENCE_ONE:
+                    JOptionPane.showMessageDialog(rootPane, ev.parameter + " experience(each)");
+                    break;
+
+
+
+
                 /* Gives a quest */
                 case RPG.Event.GIVE_QUEST:
                     params = ev.parameter.split(";");
                     
                     if (params.length != 2) {
-                        this.ohNoCrash(new Exception("GIVE_QUEST event trigger malformed parameter"));
+                        this.ohNoCrash(new Exception("GIVE_QUEST event trigger malformed parameter : " + ev.parameter));
                     }
 
                     Game.party.addQuest(Integer.parseInt(params[0]), params[1]);
                     break;
 
-                /* Show a NPC talking */
-                case RPG.Event.NPC_MESSAGE:
+                /* Complete a quest */
+                case RPG.Event.END_QUEST:
+                    Game.party.removeQuest(Integer.parseInt(ev.parameter));
+                    break;
+
+                /* IF quest exists */
+                case RPG.Event.IF_QUEST:
                     params = ev.parameter.split(";");
 
-                    if (params.length != 2) {
-                        this.ohNoCrash(new Exception("NPC_MESSAGE event trigger malformed parameter"));
+                    if (params.length != 3) {
+                        this.ohNoCrash(new Exception("IF_QUEST event trigger malformed parameter : " + ev.parameter));
                     }
-                    
-                    JOptionPane.showMessageDialog(rootPane, params[1], params[0], JOptionPane.INFORMATION_MESSAGE);
+
+                    if (Game.party.hasQuest(Integer.parseInt(params[0]))) {
+                        i = Integer.parseInt(params[1]) - 1;
+                    } else {
+                        i = Integer.parseInt(params[2]) - 1;
+                    }
+
                     break;
 
-                /* Exit script */
-                case RPG.Event.EXIT:
-                    data = "exit";
+
+
+
+                /* Gives a quest */
+                case RPG.Event.GIVE_QUESTITEM:
+                    params = ev.parameter.split(";");
+                    
+                    if (params.length != 3) {
+                        this.ohNoCrash(new Exception("GIVE_QUESTITEM event trigger malformed parameter : " + ev.parameter));
+                    }
+
+                    Game.party.addQuestItem(Integer.parseInt(params[0]), params[1], Integer.parseInt(params[2]));
+                    JOptionPane.showMessageDialog(rootPane, "Party found: \n\n" + params[2] + " " + params[1]);
+                    
                     break;
+
+                /* Complete a quest */
+                case RPG.Event.TAKE_QUESTITEM:
+                    params = ev.parameter.split(";");
+                    
+                    if (params.length != 2) {
+                        this.ohNoCrash(new Exception("TAKE_QUESTITEM event trigger malformed parameter : " + ev.parameter));
+                    }
+
+                    Game.party.removeQuestItem(Integer.parseInt(params[0]), Integer.parseInt(params[1]));
+                    break;
+
+                /* IF quest exists */
+                case RPG.Event.IF_QUESTITEM:
+                    params = ev.parameter.split(";");
+
+                    if (params.length != 4) {
+                        this.ohNoCrash(new Exception("IF_QUESTITEM event trigger malformed parameter : " + ev.parameter));
+                    }
+
+                    if (Game.party.hasQuestItem(Integer.parseInt(params[0]), Integer.parseInt(params[1]))) {
+                        i = Integer.parseInt(params[2]) - 1;
+                    } else {
+                        i = Integer.parseInt(params[3]) - 1;
+                    }
+
+                    break;
+
+
+
+
 
                 /* Change map */
                 case RPG.Event.CHANGE_MAP:
@@ -534,6 +590,11 @@ public class Game extends javax.swing.JFrame {
                     } catch (Exception e) {
                         this.ohNoCrash(new Exception("Map can't be loaded"));
                     }
+                    break;
+
+                /* Exit script */
+                case RPG.Event.EXIT:
+                    data = "exit";
                     break;
 
                 default:
@@ -711,6 +772,15 @@ class Mapview extends javax.swing.JPanel {
             }
         } else {
             g.drawString("You don't have any quests...", 10, 40);
+        }
+        
+        if (P.quest_items.size() > 0) {
+            for (int i = 0; i < P.quest_items.size(); ++i) {
+                RPG.QuestItem tmp = (RPG.QuestItem)P.quest_items.get(i);
+                g.drawString("- " + tmp.total + " " + tmp.name, 10, 200 + 20 * (i + 1));
+            }
+        } else {
+            g.drawString("You don't have any quests items...", 10, 200);
         }
     }
 

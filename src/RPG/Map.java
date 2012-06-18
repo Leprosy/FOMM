@@ -56,8 +56,8 @@ public class Map {
 
         // Events, triggers
         // Format : [x][y][code][param]
-        this.events = new Event[17];
-        this.events[0] = new Event(0, Event.NPC_MESSAGE, "Crag Hack, The Barbarian;Are you in the begining?", 0, 0);
+        this.events = new Event[24];
+        this.events[0] = new Event(0, Event.MESSAGE_NPC, "Crag Hack, The Barbarian;Are you in the begining?", 0, 0);
         this.events[1] = new Event(0, Event.MESSAGE_ONETIME, "This is the END OF THE WORLD!", 15, 15);
 
         this.events[2] = new Event(0, Event.CONFIRM, "Are you sure you want to do it?", 6, 6);
@@ -73,12 +73,19 @@ public class Map {
         this.events[11] = new Event(4, Event.MESSAGE, "Incorrect!", 7, 6);
 
         this.events[12] = new Event(0, Event.IF_QUEST, "1;3;1", 2, 2);
-        this.events[13] = new Event(1, Event.NPC_MESSAGE, "Sir Canegm, The Paladin;You're not ready to talk to me. Come when you're worthy...", 2, 2);
+        this.events[13] = new Event(1, Event.MESSAGE_NPC, "Sir Canegm, The Paladin;You're not ready to talk to me. Come when you're worthy...", 2, 2);
         this.events[14] = new Event(2, Event.EXIT, null, 2, 2);
-        this.events[15] = new Event(3, Event.NPC_MESSAGE, "Sir Canegm, happy to see you;You have succeed. Thanks...", 2, 2);
+        this.events[15] = new Event(3, Event.MESSAGE_NPC, "Sir Canegm, happy to see you;You have succeed. Thanks...", 2, 2);
         this.events[16] = new Event(4, Event.END_QUEST, "1", 2, 2);
 
+        this.events[17] = new Event(0, Event.IF_QUESTITEM, "1;1;3;1", 0, 3);
+        this.events[18] = new Event(1, Event.MESSAGE_NPC, "Resurrectra, gnome;You don't have the crystal yet.", 0, 3);
+        this.events[19] = new Event(2, Event.EXIT, null, 0, 3);
+        this.events[20] = new Event(3, Event.MESSAGE_NPC, "Resurrectra, gnome;Thanks for the crystal.", 0, 3);
+        this.events[21] = new Event(4, Event.TAKE_QUESTITEM, "1;1", 0, 3);
 
+        this.events[22] = new Event(0, Event.MESSAGE_NPC, "A strange wizard...;Take this magic crystal...", 0, 9);
+        this.events[23] = new Event(1, Event.GIVE_QUESTITEM, "1;A Magic Crystal;1", 0, 9);
         // Dispose all the resources after using them
         os.close();
     }

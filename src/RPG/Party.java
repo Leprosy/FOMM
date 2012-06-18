@@ -85,4 +85,44 @@ public class Party {
 
         return false;
     }
+    
+    public void addQuestItem(int id, String name, int total) {
+        QuestItem tmp = this._hasQuestItem(id, total);
+
+        if (tmp != null) {
+            tmp.total += total;
+        } else {
+            this.quest_items.add(new QuestItem(id, name, total));
+        }
+    }
+
+    public void removeQuestItem(int id, int total) {
+        QuestItem tmp = this._hasQuestItem(id, 1);
+
+        if (tmp != null) {
+            if (tmp.total > total) {
+                tmp.total -= total;
+            } else {
+                this.quest_items.remove(tmp);
+            }
+        }
+    }
+
+    public boolean hasQuestItem(int id, int total) {
+        return this._hasQuestItem(id, total) != null;
+    }
+
+    protected QuestItem _hasQuestItem(int id, int total) {
+        QuestItem tmp;
+
+        for (int i = 0; i < this.quest_items.size(); ++i) {
+            tmp = (QuestItem)this.quest_items.get(i);
+
+            if (tmp.id == id && tmp.total >= total) {
+                return tmp;
+            }
+        }
+
+        return null;
+    }
 }
