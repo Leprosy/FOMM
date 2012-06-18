@@ -22,9 +22,17 @@ public class Game extends javax.swing.JFrame {
     public static RPG.Party party;
     public static short dx;
     public static short dy;
+    public static byte status;
     
     public final static short T_SIZE = 20;
 
+    public final static byte IS_GAME        = 1;
+    public final static byte IS_SHOP        = 2;
+    public final static byte IS_MAP         = 3;
+    public final static byte IS_CUTSCENE    = 4;
+    public final static byte IS_PARTYSTATUS = 5;
+    public final static byte IS_QUESTS      = 6;
+    
     public Game() {
         initComponents();
 
@@ -35,7 +43,8 @@ public class Game extends javax.swing.JFrame {
             this.ohNoCrash(new Exception("Map can't be loaded"));
         }
 
-        Game.party = new RPG.Party(Game.map.startX, Game.map.startY);
+        Game.party  = new RPG.Party(Game.map.startX, Game.map.startY);
+        Game.status = Game.IS_GAME;
     }
 
     /**
@@ -57,6 +66,7 @@ public class Game extends javax.swing.JFrame {
         buttonAction = new javax.swing.JButton();
         buttonQuests = new javax.swing.JButton();
         buttonParty = new javax.swing.JButton();
+        gameButton = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -147,6 +157,13 @@ public class Game extends javax.swing.JFrame {
                 }
             });
 
+            gameButton.setText("Back to Game");
+            gameButton.addMouseListener(new java.awt.event.MouseAdapter() {
+                public void mouseClicked(java.awt.event.MouseEvent evt) {
+                    gameButtonMouseClicked(evt);
+                }
+            });
+
             fileMenu.setMnemonic('f');
             fileMenu.setText("File");
 
@@ -206,7 +223,7 @@ public class Game extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGap(0, 1, Short.MAX_VALUE)
+                                    .addGap(0, 0, Short.MAX_VALUE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(buttonStrafeLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(buttonTurnLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -225,10 +242,12 @@ public class Game extends javax.swing.JFrame {
                                     .addComponent(buttonAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addContainerGap())))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(39, 39, 39)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(buttonQuests, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buttonParty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(31, 31, 31)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(gameButton)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(buttonQuests, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(buttonParty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGap(0, 0, Short.MAX_VALUE))))
             );
             layout.setVerticalGroup(
@@ -242,6 +261,8 @@ public class Game extends javax.swing.JFrame {
                     .addComponent(buttonQuests)
                     .addGap(18, 18, 18)
                     .addComponent(buttonParty)
+                    .addGap(18, 18, 18)
+                    .addComponent(gameButton)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(buttonAction)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -293,7 +314,7 @@ public class Game extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonActionActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Fans of Might 6 Magic", "FOMM - About", JOptionPane.INFORMATION_MESSAGE, null);
+        JOptionPane.showMessageDialog(rootPane, "This is Fans of Might 6 Magic", "FOMM - About", JOptionPane.INFORMATION_MESSAGE, null);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void buttonTurnLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonTurnLeftActionPerformed
@@ -309,12 +330,19 @@ public class Game extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonTurnRightActionPerformed
 
     private void buttonPartyMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonPartyMouseClicked
-        new Main.Party(this, true, Game.party).show();
+        Game.status = Game.IS_PARTYSTATUS;
+        this.Screen.repaint();
     }//GEN-LAST:event_buttonPartyMouseClicked
 
     private void buttonQuestsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonQuestsMouseClicked
-        new Main.Quests(this, true, Game.party).show();
+        Game.status = Game.IS_QUESTS;
+        this.Screen.repaint();
     }//GEN-LAST:event_buttonQuestsMouseClicked
+
+    private void gameButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gameButtonMouseClicked
+        Game.status = Game.IS_GAME;
+        this.Screen.repaint();
+    }//GEN-LAST:event_gameButtonMouseClicked
 
 
     /**
@@ -580,6 +608,7 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JButton gameButton;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
@@ -609,14 +638,21 @@ class Mapview extends javax.swing.JPanel {
     public void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
 
-        this.renderMap(Game.map, g);
-        this.renderParty(Game.party, g);
-
-        /* Gold, food and stuff */
-        g.setColor(Color.ORANGE);
-        g.drawString("Gold : " + Game.party.gold, 10, 10);
-        g.drawString("Gems : " + Game.party.gems, 10, 20);
-        g.drawString("Food : " + Game.party.food, 10, 30);
+        /* Wich is gonna be rendered */
+        switch (Game.status) {
+            case Game.IS_GAME:
+                this.renderMap(Game.map, g);
+                this.renderParty(Game.party, g);
+                break;
+            case Game.IS_PARTYSTATUS:
+                this.renderPartyStatus(Game.party, g);
+                break;
+            case Game.IS_QUESTS:
+                renderPartyQuests(Game.party, g);
+                break;
+            default:
+                break;
+        }
     }
     
     public void renderMap(RPG.Map M, java.awt.Graphics g) {
@@ -637,6 +673,44 @@ class Mapview extends javax.swing.JPanel {
                         (t.wall%5) * Game.T_SIZE, (int)(t.wall/5) * Game.T_SIZE, (t.wall%5 + 1) * Game.T_SIZE, ((int)(t.wall/5) + 1) * Game.T_SIZE, 
                         this);
             }
+        }
+    }
+
+    public void renderPartyStatus(RPG.Party P, java.awt.Graphics g) {
+        
+        /* Gold, food and all other stuff */
+        g.setColor(Color.ORANGE);
+        
+        g.drawString("Quick Reference Chart", 10, 10);
+        
+        g.drawString("name # class level hp sp", 10, 40);
+
+        for (int i = 0; i < P.chars.length; ++i) {
+            g.drawString(P.chars[i].name + " " + i + " " +
+                    " " + P.chars[i].clss +
+                    " " + P.chars[i].level +
+                    " " + P.chars[i].hp +
+                    " " + P.chars[i].sp, 10, 20 + 20 * (i + 2));
+        }
+        
+        g.drawString("Gold : " + Game.party.gold, 10, 120);
+        g.drawString("Gems : " + Game.party.gems, 10, 130);
+        g.drawString("Food : " + Game.party.food, 10, 140);        
+    }
+    
+    public void renderPartyQuests(RPG.Party P, java.awt.Graphics g) {
+        /* Gold, food and all other stuff */
+        g.setColor(Color.ORANGE);
+        
+        g.drawString("Current Quests", 10, 10);
+        
+        if (P.quests.size() > 0) {
+            for (int i = 0; i < P.quests.size(); ++i) {
+                RPG.Quest tmp = (RPG.Quest)P.quests.get(i);
+                g.drawString("x " + tmp.name, 10, 20 + 20 * (i + 1));
+            }
+        } else {
+            g.drawString("You don't have any quests...", 10, 40);
         }
     }
 

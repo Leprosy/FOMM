@@ -31,6 +31,8 @@ public class Event {
     public static final int GIVE_SKILL = 12;
     public static final int NPC_MESSAGE = 13;
     public static final int IF_QUEST = 14;
+    
+    public static final int STORE_BLACKSMITH = 40;
 
 
     /* public static final int TELEPORT = 3;

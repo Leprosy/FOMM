@@ -36,7 +36,7 @@ public class Character {
     
 
     public Character(int i) {
-        this.hp = (byte)(Math.random() * 10 + 10);
+        this.hp = (byte)(Math.random() * 10 + 30);
         this.sp = (byte)(Math.random() * 10 + 10);
         
         this.str = (byte)(Math.random() * 10 + 10);
