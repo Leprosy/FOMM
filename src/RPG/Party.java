@@ -52,4 +52,34 @@ public class Party {
             this.facing = 3;
         }
     }
+
+    public void addQuest(int id, String name) {
+        this.quests.add(new Quest(id, name));
+    }
+
+    public void removeQuest(int id) {
+        Quest tmp;
+
+        for (int i = 0; i < this.quests.size(); ++i) {
+            tmp = (Quest)this.quests.get(i);
+            
+            if (tmp.id == id) {
+                this.quests.remove(i);
+            }
+        }        
+    }
+
+    public boolean hasQuest(int id) {
+        Quest tmp;
+
+        for (int i = 0; i < this.quests.size(); ++i) {
+            tmp = (Quest)this.quests.get(i);
+            
+            if (tmp.id == id) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

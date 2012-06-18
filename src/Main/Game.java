@@ -29,7 +29,12 @@ public class Game extends javax.swing.JFrame {
         initComponents();
 
         /* Init */
-        Game.map   = new RPG.Map("map1");
+        try {
+            Game.map   = new RPG.Map("map1");
+        } catch(Exception e) {
+            this.ohNoCrash(new Exception("Map can't be loaded"));
+        }
+
         Game.party = new RPG.Party(Game.map.startX, Game.map.startY);
     }
 
@@ -354,7 +359,7 @@ public class Game extends javax.swing.JFrame {
         for (int i = 0; i < evs.length; ++i) {
 
             RPG.Event ev = (RPG.Event)evs[i];
-            String[] thrice;
+            String[] params;
 
             System.out.println("event : " + i);
             System.out.println("code  : " + ev.code);
@@ -365,12 +370,12 @@ public class Game extends javax.swing.JFrame {
 
                 /* Shows a message everytime is triggered */
                 case RPG.Event.MESSAGE:
-                    JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(rootPane, ev.parameter);
                     break;
 
                 /* Shows a message, but just one time */
                 case RPG.Event.MESSAGE_ONETIME:
-                    JOptionPane.showMessageDialog(rootPane, ev.parameter, "FOMM - Dialog", JOptionPane.INFORMATION_MESSAGE, null);
+                    JOptionPane.showMessageDialog(rootPane, ev.parameter);
                     ev.alive = false;
                     break;
 
@@ -408,41 +413,85 @@ public class Game extends javax.swing.JFrame {
 
                 /* IF */
                 case RPG.Event.IF:
-                    thrice = ev.parameter.split(";");
+                    params = ev.parameter.split(";");
 
-                    if (thrice.length != 3) {
+                    if (params.length != 3) {
                         this.ohNoCrash(new Exception("IF event trigger malformed parameter"));
                     }
 
-                    if (data.equals(thrice[0])) {
-                        i = Integer.parseInt(thrice[1]) - 1;
+                    if (data.equals(params[0])) {
+                        i = Integer.parseInt(params[1]) - 1;
                     } else {
-                        i = Integer.parseInt(thrice[2]) - 1;
+                        i = Integer.parseInt(params[2]) - 1;
                     }
 
+                    break;
+
+                /* IF quest exists */
+                case RPG.Event.IF_QUEST:
+                    params = ev.parameter.split(";");
+
+                    if (params.length != 3) {
+                        this.ohNoCrash(new Exception("IF_QUEST event trigger malformed parameter"));
+                    }
+
+                    if (Game.party.hasQuest(Integer.parseInt(params[0]))) {
+                        i = Integer.parseInt(params[1]) - 1;
+                    } else {
+                        i = Integer.parseInt(params[2]) - 1;
+                    }
+
+                    break;
+
+                /* Complete a quest */
+                case RPG.Event.END_QUEST:
+                    Game.party.removeQuest(Integer.parseInt(ev.parameter));
                     break;
 
                 /* Give some treasure (gold;gems;food) */
                 case RPG.Event.TREASURE:
-                    thrice = ev.parameter.split(";");
+                    params = ev.parameter.split(";");
 
-                    if (thrice.length != 3) {
+                    if (params.length != 3) {
                         this.ohNoCrash(new Exception("TREASURE event trigger malformed parameter"));
                     }
 
-                    Game.party.gold += Integer.parseInt(thrice[0]);
-                    Game.party.gems += Integer.parseInt(thrice[1]);
-                    Game.party.food += Integer.parseInt(thrice[2]);
+                    Game.party.gold += Integer.parseInt(params[0]);
+                    Game.party.gems += Integer.parseInt(params[1]);
+                    Game.party.food += Integer.parseInt(params[2]);
 
                     JOptionPane.showMessageDialog(rootPane, "Party found:\n" + 
-                            thrice[0] + " gold\n" +
-                            thrice[1] + " gems\n" +
+                            params[0] + " gold\n" +
+                            params[1] + " gems\n" +
                             "\n");
 
                     break;
 
+                /* Give some experience to the whole party */
                 case RPG.Event.EXPERIENCE_PARTY:
                     JOptionPane.showMessageDialog(rootPane, ev.parameter + " experience(each)");
+                    break;
+
+                /* Gives a quest */
+                case RPG.Event.GIVE_QUEST:
+                    params = ev.parameter.split(";");
+                    
+                    if (params.length != 2) {
+                        this.ohNoCrash(new Exception("GIVE_QUEST event trigger malformed parameter"));
+                    }
+
+                    Game.party.addQuest(Integer.parseInt(params[0]), params[1]);
+                    break;
+
+                /* Show a NPC talking */
+                case RPG.Event.NPC_MESSAGE:
+                    params = ev.parameter.split(";");
+
+                    if (params.length != 2) {
+                        this.ohNoCrash(new Exception("NPC_MESSAGE event trigger malformed parameter"));
+                    }
+                    
+                    JOptionPane.showMessageDialog(rootPane, params[1], params[0], JOptionPane.INFORMATION_MESSAGE);
                     break;
 
                 /* Exit script */
@@ -452,7 +501,11 @@ public class Game extends javax.swing.JFrame {
 
                 /* Change map */
                 case RPG.Event.CHANGE_MAP:
-                    Game.map = new RPG.Map("map" + Integer.parseInt(ev.parameter));
+                    try {
+                        Game.map = new RPG.Map("map" + Integer.parseInt(ev.parameter));
+                    } catch (Exception e) {
+                        this.ohNoCrash(new Exception("Map can't be loaded"));
+                    }
                     break;
 
                 default:

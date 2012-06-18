@@ -29,13 +29,15 @@ public class Event {
     public static final int END_QUEST = 10;
     public static final int GIVE_AWARD = 11;
     public static final int GIVE_SKILL = 12;
+    public static final int NPC_MESSAGE = 13;
+    public static final int IF_QUEST = 14;
 
 
     /* public static final int TELEPORT = 3;
     public static final int SEARCH_TREASURE = 4;
     public static final int SEARCH_TRAP = 5; */
-    public static final int CHANGE_MAP = 9;
-    public static final int EXIT = 10;
+    public static final int CHANGE_MAP = 99;
+    public static final int EXIT = 100;
     
 
     public Event(int id, int code, String par, int x, int y) {

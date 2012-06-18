@@ -22,7 +22,8 @@ public class Quests extends javax.swing.JDialog {
 
         //Show party status
         for (int i = 0; i < P.quests.size(); ++i) {
-            this.jTextArea1.append(P.quests.get(i).toString() + "\n\n");
+            RPG.Quest tmp = (RPG.Quest)P.quests.get(i);
+            this.jTextArea1.append(tmp.name + "\n\n");
         }
     }
 
@@ -40,6 +41,7 @@ public class Quests extends javax.swing.JDialog {
         jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setText("Current Quests");
 
@@ -55,7 +57,7 @@ public class Quests extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE)))
