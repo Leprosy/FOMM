@@ -24,6 +24,11 @@ public class Event {
     public static final int IF = 5;
     public static final int TREASURE = 6;
     public static final int EXPERIENCE_PARTY = 7;
+    public static final int EXPERIENCE_ONE = 8;
+    public static final int GIVE_QUEST = 9;
+    public static final int END_QUEST = 10;
+    public static final int GIVE_AWARD = 11;
+    public static final int GIVE_SKILL = 12;
 
 
     /* public static final int TELEPORT = 3;

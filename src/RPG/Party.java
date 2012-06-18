@@ -4,6 +4,8 @@
  */
 package RPG;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author mrojas
@@ -17,6 +19,9 @@ public class Party {
 
     public Character[] chars;
 
+    public ArrayList quests;
+    public ArrayList quest_items;
+
     public Party(int x, int y) {
         this.X = x;
         this.Y = y;
@@ -27,6 +32,9 @@ public class Party {
         this.chars = new Character[2];
         this.chars[0] = new Character(1);
         this.chars[1] = new Character(2);
+
+        this.quest_items = new ArrayList();
+        this.quests      = new ArrayList();
     }
 
     public void right() {

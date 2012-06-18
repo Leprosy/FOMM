@@ -4,6 +4,8 @@
  */
 package RPG;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author mrojas
@@ -29,6 +31,10 @@ public class Character {
 
     public String name;
 
+    public ArrayList awards;
+    public ArrayList skills;
+    
+
     public Character(int i) {
         this.hp = (byte)(Math.random() * 10 + 10);
         this.sp = (byte)(Math.random() * 10 + 10);
@@ -49,5 +55,7 @@ public class Character {
         
         this.exp   = 0;
         this.level = 1;
+        
+        this.awards = new ArrayList();
     }
 }
