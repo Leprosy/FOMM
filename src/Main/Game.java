@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  *
  * @author mrojas
  */
-public class Game extends javax.swing.JFrame {
+public final class Game extends javax.swing.JFrame {
 
     /**
      * Creates new form Game
@@ -23,7 +23,7 @@ public class Game extends javax.swing.JFrame {
     public static short dx;
     public static short dy;
     public static byte status;
-    
+
     public final static short T_SIZE = 20;
 
     public final static byte IS_GAME        = 1;
@@ -32,7 +32,7 @@ public class Game extends javax.swing.JFrame {
     public final static byte IS_CUTSCENE    = 4;
     public final static byte IS_PARTYSTATUS = 5;
     public final static byte IS_QUESTS      = 6;
-    
+
     public Game() {
         initComponents();
 
@@ -366,6 +366,11 @@ public class Game extends javax.swing.JFrame {
             }
         }
 
+        /*
+         * Everything is set. Let's draw all again...
+         */
+        this.Screen.repaint();
+
         /* 
          * Events triggers 
          */
@@ -374,11 +379,6 @@ public class Game extends javax.swing.JFrame {
         if (ev != null) {
             this.triggerEvents(ev);
         }
-
-        /*
-         * Everything is set. Let's draw all again...
-         */
-        this.Screen.repaint();
     }
 
     public void triggerEvents(Object[] evs) {
@@ -741,14 +741,14 @@ class Mapview extends javax.swing.JPanel {
         
         /* Gold, food and all other stuff */
         g.setColor(Color.ORANGE);
-        
+
         g.drawString("Quick Reference Chart", 10, 10);
-        
+
         g.drawString("name # class level hp sp", 10, 40);
 
         for (int i = 0; i < P.chars.length; ++i) {
             g.drawString(P.chars[i].name + " " + i + " " +
-                    " " + P.chars[i].clss +
+                    " " + RPG.PlayerChar.classes[P.chars[i].clss] +
                     " " + P.chars[i].level +
                     " " + P.chars[i].hp +
                     " " + P.chars[i].sp, 10, 20 + 20 * (i + 2));

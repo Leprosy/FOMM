@@ -17,7 +17,7 @@ public class Party {
     public short gems;
     public short food;
 
-    public Character[] chars;
+    public PlayerChar[] chars;
 
     public ArrayList quests;
     public ArrayList quest_items;
@@ -32,9 +32,10 @@ public class Party {
         this.gems = 30;
         this.food = 20;
 
-        this.chars = new Character[2];
-        this.chars[0] = new Character(1);
-        this.chars[1] = new Character(2);
+        this.chars = new PlayerChar[3];
+        this.chars[0] = new PlayerChar("Edward", (byte)5, (byte)2);
+        this.chars[1] = new PlayerChar("Aindir", (byte)2, (byte)1);
+        this.chars[2] = new PlayerChar("Leprosy", (byte)0, (byte)0);
 
         this.quest_items = new ArrayList();
         this.quests      = new ArrayList();
