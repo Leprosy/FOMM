@@ -131,8 +131,10 @@ public class PlayerChar {
 
         /* Experience */
         this.att   = 1;
-        this.level = 1;
+        this.level = 0;
         this.exp   = 0;
+        this.sp    = 0;
+        this.hp    = 0;
 
         /* Baggage of items, skills and awards */
         this.awards = new ArrayList();
@@ -144,7 +146,7 @@ public class PlayerChar {
 
         this.skillList = new boolean[17];
 
-        for (int i = 0;i < 17; ++i) {
+        for (int i = 0; i < 17; ++i) {
             this.skillList[i] = false;
         }
 
@@ -159,112 +161,8 @@ public class PlayerChar {
         this.spd = (byte)(Math.random() * 10 + 10);
         this.age = (byte)(Math.random() * 10 + 18);
 
-        /* HP, bonuses & stuff relative to class and race */
-        switch(this.clss) {
-            case PlayerChar.KNIGHT:
-                this.hp = 10;
-                this.skillList[PlayerChar.ARMS_MASTER] = true;
-                break;
-            case PlayerChar.PALADIN:
-                this.sp = (byte)(3 + this.bonus(this.per));
-                this.skillList[PlayerChar.CRUSADER] = true;
-                this.hp = 8;
-                break;
-            case PlayerChar.ARCHER:
-                this.sp = (byte)(3 + this.bonus(this.wis));
-                this.hp = 7;
-                break;
-            case PlayerChar.CLERIC:
-                this.sp = (byte)(3 + this.bonus(this.per));
-                this.hp = 5;
-                break;
-            case PlayerChar.SORCERER:
-                this.sp = (byte)(3 + this.bonus(this.wis));
-                this.skillList[PlayerChar.CARTOGRAPHER] = true;
-                this.hp = 4;
-                break;
-            case PlayerChar.ROBBER:
-                this.skillList[PlayerChar.THIEVERY] = true;
-                this.hp = 8;
-                break;
-            case PlayerChar.NINJA:
-                this.skillList[PlayerChar.THIEVERY] = true;
-                this.hp = 7;
-                break;
-            case PlayerChar.BARBARIAN:
-                this.hp = 12;
-                break;
-            case PlayerChar.DRUID:
-                this.sp = (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
-                this.skillList[PlayerChar.DIRECTION_SENSE] = true;
-                this.hp = 6;
-                break;
-            case PlayerChar.RANGER:
-                this.sp = (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
-                this.skillList[PlayerChar.PATHFINDER] = true;
-                this.hp = 9;
-                break;
-
-            default:
-                break;
-        }
-
-        switch(this.race) {
-            case PlayerChar.HUMAN:
-                this.skillList[PlayerChar.SWIMMING] = true;
-                this.res_acid = 7;
-                this.res_fire = 7;
-                this.res_ener = 7;
-                this.res_magic = 7;
-                this.res_elec = 7;
-                this.res_cold = 7;
-                break;
-            case PlayerChar.ELF:
-                this.sp += 2;
-                this.hp -= 2;
-                this.res_ener = 5;
-                this.res_magic = 5;
-                break;
-            case PlayerChar.DWARF:
-                this.sp -= 1;
-                this.hp += 1;
-                this.skillList[PlayerChar.SPOT_SECRET_DOORS] = true;
-                this.res_acid = 20;
-                this.res_fire = 5;
-                this.res_ener = 5;
-                this.res_elec = 5;
-                this.res_cold = 5;
-                break;
-            case PlayerChar.GNOME:
-                this.sp += 1;
-                this.hp -= 1;
-                this.skillList[PlayerChar.DANGER_SENSE] = true;
-                this.res_acid = 2;
-                this.res_fire = 2;
-                this.res_ener = 2;
-                this.res_magic = 20;
-                this.res_elec = 2;
-                this.res_cold = 2;
-                break;
-            case PlayerChar.HALF_ORC:
-                this.sp -= 2;
-                this.hp += 2;
-                this.res_fire = 10;
-                this.res_elec = 10;
-                this.res_cold = 10;
-                break;
-
-            default:
-                break;
-        }
-
-        /* Adjustments */
-        this.hp += (byte)this.bonus(this.end);
-        
-        if (this.clss == PlayerChar.PALADIN || this.clss == PlayerChar.RANGER ||
-                this.clss == PlayerChar.ARCHER) {
-            this.sp = (byte)(this.sp / 2);
-        }
+        /* Get your first level */
+        this.levelUp();
     }
 
     public short bonus(byte stat) {
@@ -294,5 +192,177 @@ public class PlayerChar {
         if (250 <= stat) return 20;
 
         return 0;
+    }
+
+    public void levelUp() {
+        /* We are leveling up XD */
+        this.level++;
+
+        /* What's next? Make the character stronger, applying the bonuses and racial mods */
+        
+        /* Minor spell casters have their sp increment halved :( */
+        short dsp = 0;
+
+        /* Class adjustments */
+        switch(this.clss) {
+            case PlayerChar.KNIGHT:
+                this.hp += 10;
+                this.skillList[PlayerChar.ARMS_MASTER] = true;
+                
+                if (this.level % 5 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.PALADIN:
+                this.hp += 8;
+                dsp = (byte)(3 + this.bonus(this.per));
+                this.skillList[PlayerChar.CRUSADER] = true;
+
+                if (this.level % 6 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.ARCHER:
+                dsp = (byte)(3 + this.bonus(this.wis));
+                this.hp += 7;
+
+                if (this.level % 6 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.CLERIC:
+                this.sp += (byte)(3 + this.bonus(this.per));
+                this.hp += 5;
+
+                if (this.level % 7 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.SORCERER:
+                this.sp += (byte)(3 + this.bonus(this.wis));
+                this.hp += 4;
+                this.skillList[PlayerChar.CARTOGRAPHER] = true;
+
+                if (this.level % 8 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.ROBBER:
+                this.hp += 8;
+                this.skillList[PlayerChar.THIEVERY] = true;
+
+                if (this.level % 6 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.NINJA:
+                this.hp += 7;
+                this.skillList[PlayerChar.THIEVERY] = true;
+
+                if (this.level % 5 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.BARBARIAN:
+                this.hp += 12;
+
+                if (this.level % 4 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.DRUID:
+                this.sp += (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
+                this.hp += 6;
+                this.skillList[PlayerChar.DIRECTION_SENSE] = true;
+
+                if (this.level % 7 == 0) {
+                    this.att++;
+                }
+                break;
+            case PlayerChar.RANGER:
+                dsp = (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
+                this.hp += 9;
+                this.skillList[PlayerChar.PATHFINDER] = true;
+
+                if (this.level % 6 == 0) {
+                    this.att++;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        /* Racial adjustments, you racist prick XD */
+        switch(this.race) {
+            case PlayerChar.HUMAN:
+                if (this.level == 1) {
+                    this.skillList[PlayerChar.SWIMMING] = true;
+                    this.res_acid = 7;
+                    this.res_fire = 7;
+                    this.res_ener = 7;
+                    this.res_magic = 7;
+                    this.res_elec = 7;
+                    this.res_cold = 7;
+                }
+                break;
+            case PlayerChar.ELF:
+                this.sp += 2;
+                this.hp -= 2;
+
+                if (this.level == 1) {
+                    this.res_ener = 5;
+                    this.res_magic = 5;
+                }
+                break;
+            case PlayerChar.DWARF:
+                this.sp -= 1;
+                this.hp += 1;
+
+                if (this.level == 1) {
+                    this.skillList[PlayerChar.SPOT_SECRET_DOORS] = true;
+                    this.res_acid = 20;
+                    this.res_fire = 5;
+                    this.res_ener = 5;
+                    this.res_elec = 5;
+                    this.res_cold = 5;
+                }
+                break;
+            case PlayerChar.GNOME:
+                this.sp += 1;
+                this.hp -= 1;
+
+                if (this.level == 1) {
+                    this.skillList[PlayerChar.DANGER_SENSE] = true;
+                    this.res_acid = 2;
+                    this.res_fire = 2;
+                    this.res_ener = 2;
+                    this.res_magic = 20;
+                    this.res_elec = 2;
+                    this.res_cold = 2;
+                }
+                break;
+            case PlayerChar.HALF_ORC:
+                this.sp -= 2;
+                this.hp += 2;
+
+                if (this.level == 1) {
+                    this.res_fire = 10;
+                    this.res_elec = 10;
+                    this.res_cold = 10;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        /* Adjustments */
+        this.hp += (byte)this.bonus(this.end);
+
+        /* Minor spellcasters */
+        if (dsp > 0) {
+            this.sp += (byte)(dsp / 2);
+        }
     }
 }
