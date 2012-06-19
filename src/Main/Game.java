@@ -310,7 +310,9 @@ public final class Game extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonStrafeRightActionPerformed
 
     private void buttonActionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonActionActionPerformed
-        //Code for "space bar"
+        Game.party.chars[0].levelUp();
+        Game.party.chars[1].levelUp();
+        Game.party.chars[2].levelUp();
     }//GEN-LAST:event_buttonActionActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
@@ -379,6 +381,8 @@ public final class Game extends javax.swing.JFrame {
         if (ev != null) {
             this.triggerEvents(ev);
         }
+
+        System.out.println("go");
     }
 
     public void triggerEvents(Object[] evs) {

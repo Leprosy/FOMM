@@ -221,6 +221,10 @@ public class PlayerChar {
                 if (this.level % 6 == 0) {
                     this.att++;
                 }
+
+                if (this.skillList[PlayerChar.PRAYER_MASTER]) {
+                    this.sp += 1;
+                }
                 break;
             case PlayerChar.ARCHER:
                 dsp = (byte)(3 + this.bonus(this.wis));
@@ -228,6 +232,10 @@ public class PlayerChar {
 
                 if (this.level % 6 == 0) {
                     this.att++;
+                }
+
+                if (this.skillList[PlayerChar.PRESTIDIGITATOR]) {
+                    this.sp += 1;
                 }
                 break;
             case PlayerChar.CLERIC:
@@ -237,6 +245,10 @@ public class PlayerChar {
                 if (this.level % 7 == 0) {
                     this.att++;
                 }
+
+                if (this.skillList[PlayerChar.PRAYER_MASTER]) {
+                    this.sp += 2;
+                }
                 break;
             case PlayerChar.SORCERER:
                 this.sp += (byte)(3 + this.bonus(this.wis));
@@ -245,6 +257,10 @@ public class PlayerChar {
 
                 if (this.level % 8 == 0) {
                     this.att++;
+                }
+
+                if (this.skillList[PlayerChar.PRESTIDIGITATOR]) {
+                    this.sp += 2;
                 }
                 break;
             case PlayerChar.ROBBER:
@@ -278,6 +294,10 @@ public class PlayerChar {
                 if (this.level % 7 == 0) {
                     this.att++;
                 }
+
+                if (this.skillList[PlayerChar.ASTROLOGER]) {
+                    this.sp += 2;
+                }
                 break;
             case PlayerChar.RANGER:
                 dsp = (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
@@ -286,6 +306,10 @@ public class PlayerChar {
 
                 if (this.level % 6 == 0) {
                     this.att++;
+                }
+
+                if (this.skillList[PlayerChar.ASTROLOGER]) {
+                    this.sp += 1;
                 }
                 break;
 
@@ -307,8 +331,11 @@ public class PlayerChar {
                 }
                 break;
             case PlayerChar.ELF:
-                this.sp += 2;
                 this.hp -= 2;
+
+                if (this.isSpellCaster()) {
+                    this.sp += 2;
+                }
 
                 if (this.level == 1) {
                     this.res_ener = 5;
@@ -316,8 +343,11 @@ public class PlayerChar {
                 }
                 break;
             case PlayerChar.DWARF:
-                this.sp -= 1;
                 this.hp += 1;
+
+                if (this.isSpellCaster()) {
+                    this.sp -= 1;
+                }
 
                 if (this.level == 1) {
                     this.skillList[PlayerChar.SPOT_SECRET_DOORS] = true;
@@ -329,8 +359,11 @@ public class PlayerChar {
                 }
                 break;
             case PlayerChar.GNOME:
-                this.sp += 1;
                 this.hp -= 1;
+                
+                if (this.isSpellCaster()) {
+                    this.sp += 1;
+                }
 
                 if (this.level == 1) {
                     this.skillList[PlayerChar.DANGER_SENSE] = true;
@@ -343,8 +376,11 @@ public class PlayerChar {
                 }
                 break;
             case PlayerChar.HALF_ORC:
-                this.sp -= 2;
                 this.hp += 2;
+                
+                if (this.isSpellCaster()) {
+                    this.sp -= 2;
+                }
 
                 if (this.level == 1) {
                     this.res_fire = 10;
@@ -360,9 +396,40 @@ public class PlayerChar {
         /* Adjustments */
         this.hp += (byte)this.bonus(this.end);
 
+        if (this.skillList[PlayerChar.BODY_BUILDER]) {
+            this.hp += 2;
+        }
+
         /* Minor spellcasters */
         if (dsp > 0) {
             this.sp += (byte)(dsp / 2);
         }
+    }
+    
+    public boolean isSpellCaster() {
+        return (this.clss == PlayerChar.SORCERER || 
+                this.clss == PlayerChar.CLERIC ||
+                this.clss == PlayerChar.DRUID ||
+                this.clss == PlayerChar.PALADIN ||
+                this.clss == PlayerChar.ARCHER ||
+                this.clss == PlayerChar.RANGER);
+    }
+
+    public byte getAC() {
+        return (byte)this.bonus(this.spd);
+    }
+
+    public byte getDamage() {
+        return (byte)this.bonus(this.str);
+    }
+
+    public byte getToHit() {
+        byte hit = 0;
+
+        if (this.skillList[PlayerChar.ARMS_MASTER]) {
+            hit = 1;
+        }
+
+        return (byte)(hit + this.bonus(this.acc));
     }
 }
