@@ -121,7 +121,7 @@ public class PlayerChar {
         "Swimming",
         "Thievery"
     };
-    
+
 
     public PlayerChar(String name, byte clss, byte race) {
         /* Who is this guy? (i.e. Edward, the gnome robber) */
@@ -134,6 +134,31 @@ public class PlayerChar {
         this.level = 1;
         this.exp   = 0;
 
+        /* Baggage of items, skills and awards */
+        this.awards = new ArrayList();
+        this.items = new Item[20];
+
+        for (int i = 0; i < 20; ++i) {
+            this.items[i] = new Item();
+        }
+
+        this.skillList = new boolean[17];
+
+        for (int i = 0;i < 17; ++i) {
+            this.skillList[i] = false;
+        }
+
+        /* The stats */
+        this.str = (byte)(Math.random() * 10 + 10);
+        this.wis = (byte)(Math.random() * 10 + 10);
+        this.end = (byte)(Math.random() * 10 + 10);
+        this.lck = (byte)(Math.random() * 10 + 10);
+        this.per = (byte)(Math.random() * 10 + 10);
+        this.acc = (byte)(Math.random() * 10 + 10);
+        this.spd = (byte)(Math.random() * 10 + 10);
+        this.spd = (byte)(Math.random() * 10 + 10);
+        this.age = (byte)(Math.random() * 10 + 18);
+
         /* HP, bonuses & stuff relative to class and race */
         switch(this.clss) {
             case PlayerChar.KNIGHT:
@@ -141,16 +166,20 @@ public class PlayerChar {
                 this.skillList[PlayerChar.ARMS_MASTER] = true;
                 break;
             case PlayerChar.PALADIN:
+                this.sp = (byte)(3 + this.bonus(this.per));
                 this.skillList[PlayerChar.CRUSADER] = true;
                 this.hp = 8;
                 break;
             case PlayerChar.ARCHER:
+                this.sp = (byte)(3 + this.bonus(this.wis));
                 this.hp = 7;
                 break;
             case PlayerChar.CLERIC:
+                this.sp = (byte)(3 + this.bonus(this.per));
                 this.hp = 5;
                 break;
             case PlayerChar.SORCERER:
+                this.sp = (byte)(3 + this.bonus(this.wis));
                 this.skillList[PlayerChar.CARTOGRAPHER] = true;
                 this.hp = 4;
                 break;
@@ -166,10 +195,12 @@ public class PlayerChar {
                 this.hp = 12;
                 break;
             case PlayerChar.DRUID:
+                this.sp = (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
                 this.skillList[PlayerChar.DIRECTION_SENSE] = true;
                 this.hp = 6;
                 break;
             case PlayerChar.RANGER:
+                this.sp = (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
                 this.skillList[PlayerChar.PATHFINDER] = true;
                 this.hp = 9;
                 break;
@@ -189,10 +220,14 @@ public class PlayerChar {
                 this.res_cold = 7;
                 break;
             case PlayerChar.ELF:
+                this.sp += 2;
+                this.hp -= 2;
                 this.res_ener = 5;
                 this.res_magic = 5;
                 break;
             case PlayerChar.DWARF:
+                this.sp -= 1;
+                this.hp += 1;
                 this.skillList[PlayerChar.SPOT_SECRET_DOORS] = true;
                 this.res_acid = 20;
                 this.res_fire = 5;
@@ -201,6 +236,8 @@ public class PlayerChar {
                 this.res_cold = 5;
                 break;
             case PlayerChar.GNOME:
+                this.sp += 1;
+                this.hp -= 1;
                 this.skillList[PlayerChar.DANGER_SENSE] = true;
                 this.res_acid = 2;
                 this.res_fire = 2;
@@ -210,6 +247,8 @@ public class PlayerChar {
                 this.res_cold = 2;
                 break;
             case PlayerChar.HALF_ORC:
+                this.sp -= 2;
+                this.hp += 2;
                 this.res_fire = 10;
                 this.res_elec = 10;
                 this.res_cold = 10;
@@ -218,29 +257,42 @@ public class PlayerChar {
             default:
                 break;
         }
+
+        /* Adjustments */
+        this.hp += (byte)this.bonus(this.end);
         
-        this.str = (byte)(Math.random() * 10 + 10);
-        this.wis = (byte)(Math.random() * 10 + 10);
-        this.end = (byte)(Math.random() * 10 + 10);
-        this.lck = (byte)(Math.random() * 10 + 10);
-        this.per = (byte)(Math.random() * 10 + 10);
-        this.acc = (byte)(Math.random() * 10 + 10);
-        this.spd = (byte)(Math.random() * 10 + 10);
-        this.spd = (byte)(Math.random() * 10 + 10);
-        this.age = (byte)(Math.random() * 10 + 18);
-
-        /* Baggage of items, skills and awards */
-        this.awards = new ArrayList();
-        this.items = new Item[20];
-
-        for (int i = 0; i < 20; ++i) {
-            this.items[i] = new Item();
+        if (this.clss == PlayerChar.PALADIN || this.clss == PlayerChar.RANGER ||
+                this.clss == PlayerChar.ARCHER) {
+            this.sp = (byte)(this.sp / 2);
         }
+    }
 
-        this.skillList = new boolean[17];
+    public short bonus(byte stat) {
+        if (stat <= 2) return -5;
+        if (3 <= stat && stat <= 4) return -4;
+        if (5 <= stat && stat <= 6) return -3;
+        if (7 <= stat && stat <= 8) return -2;
+        if (9 <= stat && stat <= 10) return -3;
+        if (11 <= stat && stat <= 12) return 0;
+        if (13 <= stat && stat <= 14) return 1;
+        if (15 <= stat && stat <= 16) return 2;
+        if (17 <= stat && stat <= 18) return 3;
+        if (19 <= stat && stat <= 20) return 4;
+        if (21 <= stat && stat <= 24) return 5;
+        if (25 <= stat && stat <= 29) return 6;
+        if (30 <= stat && stat <= 34) return 7;
+        if (35 <= stat && stat <= 39) return 8;
+        if (40 <= stat && stat <= 49) return 9;
+        if (50 <= stat && stat <= 74) return 10;
+        if (75 <= stat && stat <= 99) return 11;
+        if (100 <= stat && stat <= 124) return 12;
+        if (125 <= stat && stat <= 149) return 13;
+        if (150 <= stat && stat <= 174) return 14;
+        if (175 <= stat && stat <= 199) return 15;
+        if (200 <= stat && stat <= 224) return 16;
+        if (225 <= stat && stat <= 249) return 17;
+        if (250 <= stat) return 20;
 
-        for (int i = 0;i < 17; ++i) {
-            this.skillList[i] = false;
-        }        
+        return 0;
     }
 }

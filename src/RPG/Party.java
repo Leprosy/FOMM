@@ -126,4 +126,56 @@ public class Party {
 
         return null;
     }
+
+    public boolean canSwim() {
+        for (int i = 0; i < this.chars.length; ++i) {
+            if (!this.chars[i].skillList[PlayerChar.SWIMMING]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean canCrusade() {
+        for (int i = 0; i < this.chars.length; ++i) {
+            if (!this.chars[i].skillList[PlayerChar.CRUSADER]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean canPathFind() {
+        int path = 0;
+
+        for (int i = 0; i < this.chars.length; ++i) {
+            if (this.chars[i].skillList[PlayerChar.PATHFINDER]) {
+                path++;
+                
+                if (path == 2) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean canMountain() {
+        int path = 0;
+
+        for (int i = 0; i < this.chars.length; ++i) {
+            if (this.chars[i].skillList[PlayerChar.MOUNTAINEER]) {
+                path++;
+                
+                if (path == 2) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 }
