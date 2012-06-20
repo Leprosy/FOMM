@@ -194,6 +194,35 @@ public class Char {
         return 0;
     }
 
+    public String bonusName(byte stat) {
+        if (stat <= 2) return "Nonexistant";
+        if (3 <= stat && stat <= 4) return "Very Poor";
+        if (5 <= stat && stat <= 6) return "Poor";
+        if (7 <= stat && stat <= 8) return "Very Low";
+        if (9 <= stat && stat <= 10) return "Low";
+        if (11 <= stat && stat <= 12) return "Average";
+        if (13 <= stat && stat <= 14) return "Good";
+        if (15 <= stat && stat <= 16) return "Very Good";
+        if (17 <= stat && stat <= 18) return "High";
+        if (19 <= stat && stat <= 20) return "Very High";
+        if (21 <= stat && stat <= 24) return "Great";
+        if (25 <= stat && stat <= 29) return "Super";
+        if (30 <= stat && stat <= 34) return "Amazing";
+        if (35 <= stat && stat <= 39) return "Incredible";
+        if (40 <= stat && stat <= 49) return "Gigantic";
+        if (50 <= stat && stat <= 74) return "Fantastic";
+        if (75 <= stat && stat <= 99) return "Astounding";
+        if (100 <= stat && stat <= 124) return "Astonishing";
+        if (125 <= stat && stat <= 149) return "Monumental";
+        if (150 <= stat && stat <= 174) return "Tremendous";
+        if (175 <= stat && stat <= 199) return "Collosal";
+        if (200 <= stat && stat <= 224) return "Awesome";
+        if (225 <= stat && stat <= 249) return "Awe Inspiring";
+        if (250 <= stat) return "Ultimate";
+
+        return "None";
+    }
+
     public void levelUp() {
         /* We are leveling up XD */
         this.level++;
