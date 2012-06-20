@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author mrojas
  */
-public class PlayerChar {
+public class Char {
     public String name;
     public byte clss;
     public byte race;
@@ -123,7 +123,7 @@ public class PlayerChar {
     };
 
 
-    public PlayerChar(String name, byte clss, byte race) {
+    public Char(String name, byte clss, byte race) {
         /* Who is this guy? (i.e. Edward, the gnome robber) */
         this.name = name;
         this.race = race;
@@ -205,28 +205,28 @@ public class PlayerChar {
 
         /* Class adjustments */
         switch(this.clss) {
-            case PlayerChar.KNIGHT:
+            case Char.KNIGHT:
                 this.hp += 10;
-                this.skillList[PlayerChar.ARMS_MASTER] = true;
+                this.skillList[Char.ARMS_MASTER] = true;
                 
                 if (this.level % 5 == 0) {
                     this.att++;
                 }
                 break;
-            case PlayerChar.PALADIN:
+            case Char.PALADIN:
                 this.hp += 8;
                 dsp = (byte)(3 + this.bonus(this.per));
-                this.skillList[PlayerChar.CRUSADER] = true;
+                this.skillList[Char.CRUSADER] = true;
 
                 if (this.level % 6 == 0) {
                     this.att++;
                 }
 
-                if (this.skillList[PlayerChar.PRAYER_MASTER]) {
+                if (this.skillList[Char.PRAYER_MASTER]) {
                     this.sp += 1;
                 }
                 break;
-            case PlayerChar.ARCHER:
+            case Char.ARCHER:
                 dsp = (byte)(3 + this.bonus(this.wis));
                 this.hp += 7;
 
@@ -234,11 +234,11 @@ public class PlayerChar {
                     this.att++;
                 }
 
-                if (this.skillList[PlayerChar.PRESTIDIGITATOR]) {
+                if (this.skillList[Char.PRESTIDIGITATOR]) {
                     this.sp += 1;
                 }
                 break;
-            case PlayerChar.CLERIC:
+            case Char.CLERIC:
                 this.sp += (byte)(3 + this.bonus(this.per));
                 this.hp += 5;
 
@@ -246,69 +246,69 @@ public class PlayerChar {
                     this.att++;
                 }
 
-                if (this.skillList[PlayerChar.PRAYER_MASTER]) {
+                if (this.skillList[Char.PRAYER_MASTER]) {
                     this.sp += 2;
                 }
                 break;
-            case PlayerChar.SORCERER:
+            case Char.SORCERER:
                 this.sp += (byte)(3 + this.bonus(this.wis));
                 this.hp += 4;
-                this.skillList[PlayerChar.CARTOGRAPHER] = true;
+                this.skillList[Char.CARTOGRAPHER] = true;
 
                 if (this.level % 8 == 0) {
                     this.att++;
                 }
 
-                if (this.skillList[PlayerChar.PRESTIDIGITATOR]) {
+                if (this.skillList[Char.PRESTIDIGITATOR]) {
                     this.sp += 2;
                 }
                 break;
-            case PlayerChar.ROBBER:
+            case Char.ROBBER:
                 this.hp += 8;
-                this.skillList[PlayerChar.THIEVERY] = true;
+                this.skillList[Char.THIEVERY] = true;
 
                 if (this.level % 6 == 0) {
                     this.att++;
                 }
                 break;
-            case PlayerChar.NINJA:
+            case Char.NINJA:
                 this.hp += 7;
-                this.skillList[PlayerChar.THIEVERY] = true;
+                this.skillList[Char.THIEVERY] = true;
 
                 if (this.level % 5 == 0) {
                     this.att++;
                 }
                 break;
-            case PlayerChar.BARBARIAN:
+            case Char.BARBARIAN:
                 this.hp += 12;
 
                 if (this.level % 4 == 0) {
                     this.att++;
                 }
                 break;
-            case PlayerChar.DRUID:
+            case Char.DRUID:
                 this.sp += (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
                 this.hp += 6;
-                this.skillList[PlayerChar.DIRECTION_SENSE] = true;
+                this.skillList[Char.DIRECTION_SENSE] = true;
 
                 if (this.level % 7 == 0) {
                     this.att++;
                 }
 
-                if (this.skillList[PlayerChar.ASTROLOGER]) {
+                if (this.skillList[Char.ASTROLOGER]) {
                     this.sp += 2;
                 }
                 break;
-            case PlayerChar.RANGER:
+            case Char.RANGER:
                 dsp = (byte)(3 + (int)((this.bonus(this.wis) + this.bonus(this.per)) / 2));
                 this.hp += 9;
-                this.skillList[PlayerChar.PATHFINDER] = true;
+                this.skillList[Char.PATHFINDER] = true;
 
                 if (this.level % 6 == 0) {
                     this.att++;
                 }
 
-                if (this.skillList[PlayerChar.ASTROLOGER]) {
+                if (this.skillList[Char.ASTROLOGER]) {
                     this.sp += 1;
                 }
                 break;
@@ -319,9 +319,9 @@ public class PlayerChar {
 
         /* Racial adjustments, you racist prick XD */
         switch(this.race) {
-            case PlayerChar.HUMAN:
+            case Char.HUMAN:
                 if (this.level == 1) {
-                    this.skillList[PlayerChar.SWIMMING] = true;
+                    this.skillList[Char.SWIMMING] = true;
                     this.res_acid = 7;
                     this.res_fire = 7;
                     this.res_ener = 7;
@@ -330,7 +330,7 @@ public class PlayerChar {
                     this.res_cold = 7;
                 }
                 break;
-            case PlayerChar.ELF:
+            case Char.ELF:
                 this.hp -= 2;
 
                 if (this.isSpellCaster()) {
@@ -342,7 +342,7 @@ public class PlayerChar {
                     this.res_magic = 5;
                 }
                 break;
-            case PlayerChar.DWARF:
+            case Char.DWARF:
                 this.hp += 1;
 
                 if (this.isSpellCaster()) {
@@ -350,7 +350,7 @@ public class PlayerChar {
                 }
 
                 if (this.level == 1) {
-                    this.skillList[PlayerChar.SPOT_SECRET_DOORS] = true;
+                    this.skillList[Char.SPOT_SECRET_DOORS] = true;
                     this.res_acid = 20;
                     this.res_fire = 5;
                     this.res_ener = 5;
@@ -358,7 +358,7 @@ public class PlayerChar {
                     this.res_cold = 5;
                 }
                 break;
-            case PlayerChar.GNOME:
+            case Char.GNOME:
                 this.hp -= 1;
                 
                 if (this.isSpellCaster()) {
@@ -366,7 +366,7 @@ public class PlayerChar {
                 }
 
                 if (this.level == 1) {
-                    this.skillList[PlayerChar.DANGER_SENSE] = true;
+                    this.skillList[Char.DANGER_SENSE] = true;
                     this.res_acid = 2;
                     this.res_fire = 2;
                     this.res_ener = 2;
@@ -375,7 +375,7 @@ public class PlayerChar {
                     this.res_cold = 2;
                 }
                 break;
-            case PlayerChar.HALF_ORC:
+            case Char.HALF_ORC:
                 this.hp += 2;
                 
                 if (this.isSpellCaster()) {
@@ -396,7 +396,7 @@ public class PlayerChar {
         /* Adjustments */
         this.hp += (byte)this.bonus(this.end);
 
-        if (this.skillList[PlayerChar.BODY_BUILDER]) {
+        if (this.skillList[Char.BODY_BUILDER]) {
             this.hp += 2;
         }
 
@@ -405,14 +405,14 @@ public class PlayerChar {
             this.sp += (byte)(dsp / 2);
         }
     }
-    
+
     public boolean isSpellCaster() {
-        return (this.clss == PlayerChar.SORCERER || 
-                this.clss == PlayerChar.CLERIC ||
-                this.clss == PlayerChar.DRUID ||
-                this.clss == PlayerChar.PALADIN ||
-                this.clss == PlayerChar.ARCHER ||
-                this.clss == PlayerChar.RANGER);
+        return (this.clss == Char.SORCERER || 
+                this.clss == Char.CLERIC ||
+                this.clss == Char.DRUID ||
+                this.clss == Char.PALADIN ||
+                this.clss == Char.ARCHER ||
+                this.clss == Char.RANGER);
     }
 
     public byte getAC() {
@@ -426,7 +426,7 @@ public class PlayerChar {
     public byte getToHit() {
         byte hit = 0;
 
-        if (this.skillList[PlayerChar.ARMS_MASTER]) {
+        if (this.skillList[Char.ARMS_MASTER]) {
             hit = 1;
         }
 

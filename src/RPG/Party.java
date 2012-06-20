@@ -17,7 +17,7 @@ public class Party {
     public short gems;
     public short food;
 
-    public PlayerChar[] chars;
+    public Char[] chars;
 
     public ArrayList quests;
     public ArrayList quest_items;
@@ -32,10 +32,10 @@ public class Party {
         this.gems = 30;
         this.food = 20;
 
-        this.chars = new PlayerChar[3];
-        this.chars[0] = new PlayerChar("Edward", (byte)5, (byte)2);
-        this.chars[1] = new PlayerChar("Aindir", (byte)2, (byte)1);
-        this.chars[2] = new PlayerChar("Leprosy", (byte)0, (byte)0);
+        this.chars = new Char[3];
+        this.chars[0] = new Char("Edward", (byte)5, (byte)2);
+        this.chars[1] = new Char("Aindir", (byte)2, (byte)1);
+        this.chars[2] = new Char("Leprosy", (byte)0, (byte)0);
 
         this.quest_items = new ArrayList();
         this.quests      = new ArrayList();
@@ -129,7 +129,7 @@ public class Party {
 
     public boolean canSwim() {
         for (int i = 0; i < this.chars.length; ++i) {
-            if (!this.chars[i].skillList[PlayerChar.SWIMMING]) {
+            if (!this.chars[i].skillList[Char.SWIMMING]) {
                 return false;
             }
         }
@@ -139,7 +139,7 @@ public class Party {
 
     public boolean canCrusade() {
         for (int i = 0; i < this.chars.length; ++i) {
-            if (!this.chars[i].skillList[PlayerChar.CRUSADER]) {
+            if (!this.chars[i].skillList[Char.CRUSADER]) {
                 return false;
             }
         }
@@ -151,7 +151,7 @@ public class Party {
         int path = 0;
 
         for (int i = 0; i < this.chars.length; ++i) {
-            if (this.chars[i].skillList[PlayerChar.PATHFINDER]) {
+            if (this.chars[i].skillList[Char.PATHFINDER]) {
                 path++;
                 
                 if (path == 2) {
@@ -167,7 +167,7 @@ public class Party {
         int path = 0;
 
         for (int i = 0; i < this.chars.length; ++i) {
-            if (this.chars[i].skillList[PlayerChar.MOUNTAINEER]) {
+            if (this.chars[i].skillList[Char.MOUNTAINEER]) {
                 path++;
                 
                 if (path == 2) {

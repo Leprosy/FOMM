@@ -752,7 +752,7 @@ class Mapview extends javax.swing.JPanel {
 
         for (int i = 0; i < P.chars.length; ++i) {
             g.drawString(P.chars[i].name + " " + i + " " +
-                    " " + RPG.PlayerChar.classes[P.chars[i].clss] +
+                    " " + RPG.Char.classes[P.chars[i].clss] +
                     " " + P.chars[i].level +
                     " " + P.chars[i].hp +
                     " " + P.chars[i].sp, 10, 20 + 20 * (i + 2));
