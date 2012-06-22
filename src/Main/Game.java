@@ -358,13 +358,20 @@ public final class Game extends javax.swing.JFrame {
             RPG.Tile tmp = Game.map.tile(Game.party.X + Game.dx, Game.party.Y + Game.dy);
 
             if (tmp != null) {
-                if (!tmp.flags[RPG.Tile.IMPASSABLE]) { // Tile is impassable
-                    Game.party.X += Game.dx;
-                    Game.party.Y += Game.dy;
-
+                if (tmp.flags[RPG.Tile.IMPASSABLE] || //Tile is impassable
+                    (tmp.flags[RPG.Tile.WATER] && !Game.party.canSwim()) || //Tile is water
+                    (tmp.flags[RPG.Tile.DENSE_TREES] && !Game.party.canPathFind()) || //Tile is dense forest
+                    (tmp.flags[RPG.Tile.MOUNTAIN] && !Game.party.canMountain()) //Mountaineering
+                        ) {
                     Game.dx = 0;
                     Game.dy = 0;
                 }
+
+                Game.party.X += Game.dx;
+                Game.party.Y += Game.dy;
+
+                Game.dx = 0;
+                Game.dy = 0;
             }
         }
 
@@ -381,8 +388,6 @@ public final class Game extends javax.swing.JFrame {
         if (ev != null) {
             this.triggerEvents(ev);
         }
-
-        System.out.println("go");
     }
 
     public void triggerEvents(Object[] evs) {

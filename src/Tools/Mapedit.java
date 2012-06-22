@@ -60,6 +60,8 @@ public class Mapedit extends javax.swing.JFrame {
         Mapedit.flags[3] = this.jCheckBox4;
         Mapedit.flags[4] = this.jCheckBox5;
         Mapedit.flags[5] = this.jCheckBox6;
+        Mapedit.flags[6] = this.jCheckBox7;
+        Mapedit.flags[7] = this.jCheckBox8;
     }
 
     /**
@@ -81,6 +83,8 @@ public class Mapedit extends javax.swing.JFrame {
         jCheckBox6 = new javax.swing.JCheckBox();
         jTextField1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jCheckBox7 = new javax.swing.JCheckBox();
+        jCheckBox8 = new javax.swing.JCheckBox();
         Mapview = new Mapview();
         BaseIcons = new javax.swing.JLabel();
         BaseIcons_Label = new javax.swing.JLabel();
@@ -158,6 +162,20 @@ public class Mapedit extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox7.setText("Dense trees");
+        jCheckBox7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox7MouseClicked(evt);
+            }
+        });
+
+        jCheckBox8.setText("Mountain");
+        jCheckBox8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jCheckBox8MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout FlagsLayout = new javax.swing.GroupLayout(Flags);
         Flags.setLayout(FlagsLayout);
         FlagsLayout.setHorizontalGroup(
@@ -167,19 +185,20 @@ public class Mapedit extends javax.swing.JFrame {
                 .addGroup(FlagsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Hint)
                     .addGroup(FlagsLayout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(26, 26, 26)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
+                    .addGroup(FlagsLayout.createSequentialGroup()
                         .addGroup(FlagsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBox1)
                             .addComponent(jCheckBox2)
                             .addComponent(jCheckBox3)
                             .addComponent(jCheckBox4)
                             .addComponent(jCheckBox5)
-                            .addComponent(jCheckBox6))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(FlagsLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)))
+                            .addComponent(jCheckBox6)
+                            .addComponent(jCheckBox7)
+                            .addComponent(jCheckBox8))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         FlagsLayout.setVerticalGroup(
@@ -196,13 +215,17 @@ public class Mapedit extends javax.swing.JFrame {
                 .addComponent(jCheckBox4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jCheckBox6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addGroup(FlagsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
-                .addGap(42, 42, 42)
+                    .addComponent(jButton3)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Hint, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
+                .addContainerGap())
         );
 
         Mapview.setBackground(new java.awt.Color(1, 1, 1));
@@ -580,6 +603,14 @@ public class Mapedit extends javax.swing.JFrame {
         Mapedit.scripts[Mapedit.X][Mapedit.Y] = this.jTextArea1.getText();
     }//GEN-LAST:event_jTextArea1MouseExited
 
+    private void jCheckBox7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox7MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[6] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[6];
+    }//GEN-LAST:event_jCheckBox7MouseClicked
+
+    private void jCheckBox8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox8MouseClicked
+        Mapedit.map[Mapedit.X][Mapedit.Y].flags[7] = !Mapedit.map[Mapedit.X][Mapedit.Y].flags[7];
+    }//GEN-LAST:event_jCheckBox8MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -646,6 +677,8 @@ public class Mapedit extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JCheckBox jCheckBox6;
+    private javax.swing.JCheckBox jCheckBox7;
+    private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
