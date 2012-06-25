@@ -21,6 +21,8 @@ public class Map {
     public int width;
     public int height;
 
+    public Monster[] monsters;
+
     public Map(String file) throws Exception {
         DataInputStream os = new DataInputStream(new FileInputStream(getClass().getResource("/Assets/maps/" + file).getFile()));
 
@@ -52,11 +54,14 @@ public class Map {
 
         // Events, triggers
         // Format : [x][y][code][param]
-        this.events = new Event[24];
-        this.events[0] = new Event(0, Event.MESSAGE_NPC, "Crag Hack, The Barbarian;Are you in the begining?", 0, 0);
-        this.events[1] = new Event(0, Event.MESSAGE_ONETIME, "This is the END OF THE WORLD!", 15, 15);
+        this.events = new Event[4];
+        this.events[0] = new Event(0, Event.MESSAGE_NPC, "Crag Hack, The Barbarian;There you will have some exp...", 5, 5);
+        this.events[1] = new Event(0, Event.CHOOSE_CHAR, "", 5, 5);
+        this.events[2] = new Event(0, Event.DAMAGE_CHAR, "10", 5, 5);
+        this.events[3] = new Event(0, Event.EXPERIENCE_CHAR, "2000", 5, 5);
+        //this.events[1] = new Event(0, Event.MESSAGE_ONETIME, "This is the END OF THE WORLD!", 15, 15);
 
-        this.events[2] = new Event(0, Event.CONFIRM, "Are you sure you want to do it?", 6, 6);
+        /*this.events[2] = new Event(0, Event.CONFIRM, "Are you sure you want to do it?", 6, 6);
         this.events[3] = new Event(1, Event.IF, "ok;2;4", 6, 6);
         this.events[4] = new Event(2, Event.GIVE_QUEST, "1;Go see Sir Canegm in (2,2) if you want to conclude this quest", 6, 6);
         this.events[5] = new Event(3, Event.EXIT, "", 6, 6);
@@ -81,7 +86,14 @@ public class Map {
         this.events[21] = new Event(4, Event.TAKE_QUESTITEM, "1;1", 0, 3);
 
         this.events[22] = new Event(0, Event.MESSAGE_NPC, "A strange wizard...;Take this magic crystal...", 0, 9);
-        this.events[23] = new Event(1, Event.GIVE_QUESTITEM, "1;A Magic Crystal;1", 0, 9);
+        this.events[23] = new Event(1, Event.GIVE_QUESTITEM, "1;A Magic Crystal;1", 0, 9);*/
+
+        //Monsters
+        this.monsters = new Monster[5];
+        for (int i = 0; i < 5; ++i) {
+            this.monsters[i] = new Monster((byte)(Math.random() * 15), (byte)(Math.random() * 15));
+        }
+
         // Dispose all the resources after using them
         os.close();
     }

@@ -28,7 +28,7 @@ public class Event {
 
     public static final int TREASURE = 7;
     public static final int EXPERIENCE_PARTY = 8;
-    public static final int EXPERIENCE_ONE = 9;
+    public static final int EXPERIENCE_CHAR = 9;
 
     public static final int GIVE_QUEST = 10;
     public static final int END_QUEST = 11;
@@ -42,7 +42,10 @@ public class Event {
     public static final int IF_QUESTITEM = 17;
 
     //public static final int STORE_BLACKSMITH = 40;
-
+    public static final int CHOOSE_CHAR = 25;
+    
+    public static final int DAMAGE_PARTY = 30;
+    public static final int DAMAGE_CHAR = 31;
 
     /* public static final int TELEPORT = 3;
     public static final int SEARCH_TREASURE = 4;

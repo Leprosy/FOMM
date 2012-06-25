@@ -6,8 +6,12 @@ package Main;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+
+import javazoom.jl.player.Player;
 
 /**
  *
@@ -23,6 +27,7 @@ public final class Game extends javax.swing.JFrame {
     public static short dx;
     public static short dy;
     public static byte status;
+    public static Player mp3;
 
     public final static short T_SIZE = 20;
 
@@ -45,6 +50,23 @@ public final class Game extends javax.swing.JFrame {
 
         Game.party  = new RPG.Party(Game.map.startX, Game.map.startY);
         Game.status = Game.IS_GAME;
+
+        /* Music code */
+        /*try {
+            Game.mp3 = new Player(new BufferedInputStream(
+                    new FileInputStream(getClass().getResource("/Assets/audio/music/music.mp3").getPath())
+                ));
+            
+            new Thread() {
+                public void run() {
+                    try { Game.mp3.play(); }
+                    catch (Exception e) { System.out.println(e); }
+                }
+            }.start();
+
+        } catch (Exception e) { 
+            e.printStackTrace();
+        } */
     }
 
     /**
@@ -372,6 +394,13 @@ public final class Game extends javax.swing.JFrame {
 
                 Game.dx = 0;
                 Game.dy = 0;
+
+                /* Move monsters */
+                for (int i = 0; i < Game.map.monsters.length; ++i) {
+                    RPG.Monster MN = Game.map.monsters[i];
+                    
+                    System.out.println(MN.X + "");
+                }
             }
         }
 
@@ -395,6 +424,7 @@ public final class Game extends javax.swing.JFrame {
         
         for (int i = 0; i < evs.length; ++i) {
 
+            int j = 0;
             RPG.Event ev = (RPG.Event)evs[i];
             String[] params;
 
@@ -442,7 +472,7 @@ public final class Game extends javax.swing.JFrame {
 
                 /* Confirm */
                 case RPG.Event.CONFIRM:
-                    int j = JOptionPane.showConfirmDialog(rootPane, ev.parameter);
+                    j = JOptionPane.showConfirmDialog(rootPane, ev.parameter);
 
                     if (j == 0) {
                         data = "ok";
@@ -502,12 +532,17 @@ public final class Game extends javax.swing.JFrame {
 
                 /* Give some experience to the whole party */
                 case RPG.Event.EXPERIENCE_PARTY:
+                    for (j = 0; j < Game.party.chars.length; ++j) {
+                        Game.party.chars[j].exp += Integer.parseInt(ev.parameter);
+                    }
+
                     JOptionPane.showMessageDialog(rootPane, ev.parameter + " experience(each)");
                     break;
 
                 /* Give some experience to one party member */
-                case RPG.Event.EXPERIENCE_ONE:
-                    JOptionPane.showMessageDialog(rootPane, ev.parameter + " experience(each)");
+                case RPG.Event.EXPERIENCE_CHAR:
+                    Game.party.chars[Integer.parseInt(data)].exp += Integer.parseInt(ev.parameter);
+                    JOptionPane.showMessageDialog(rootPane, ev.parameter + " experience");
                     break;
 
 
@@ -589,8 +624,27 @@ public final class Game extends javax.swing.JFrame {
                     break;
 
 
+                /* Choose a character */
+                case RPG.Event.CHOOSE_CHAR:
+                    data = JOptionPane.showInputDialog("Choose char. [0-" + Game.party.chars.length + "]");
+                    break;
 
 
+                /* Give some damage to the whole party */
+                case RPG.Event.DAMAGE_PARTY:
+                    for (j = 0; j < Game.party.chars.length; ++j) {
+                        Game.party.chars[j].hp -= Integer.parseInt(ev.parameter);
+                    }
+
+                    JOptionPane.showMessageDialog(rootPane, "OUCH!");
+                    break;
+
+                /* Give some damage to the whole party */
+                case RPG.Event.DAMAGE_CHAR:
+                    Game.party.chars[Integer.parseInt(data)].hp -= Integer.parseInt(ev.parameter);
+
+                    JOptionPane.showMessageDialog(rootPane, "OUCH!");
+                    break;
 
                 /* Change map */
                 case RPG.Event.CHANGE_MAP:
@@ -726,7 +780,7 @@ class Mapview extends javax.swing.JPanel {
     }
     
     public void renderMap(RPG.Map M, java.awt.Graphics g) {
-        /* Render map */
+        /* Render map tiles */
         int w = Game.map.width;
         int h = Game.map.height;
        
@@ -744,6 +798,13 @@ class Mapview extends javax.swing.JPanel {
                         this);
             }
         }
+
+        /* Render monsters */
+        for (int i = 0; i < Game.map.monsters.length; ++i) {
+            RPG.Monster MN = Game.map.monsters[i];
+            g.setColor(Color.RED);
+            g.drawString(MN.total + "", (MN.X * Game.T_SIZE) + 10, (MN.Y * Game.T_SIZE) + 5);
+        }
     }
 
     public void renderPartyStatus(RPG.Party P, java.awt.Graphics g) {
@@ -758,7 +819,7 @@ class Mapview extends javax.swing.JPanel {
         for (int i = 0; i < P.chars.length; ++i) {
             g.drawString(P.chars[i].name + " " + i + " " +
                     " " + RPG.Char.classes[P.chars[i].clss] +
-                    " " + P.chars[i].level +
+                    " " + P.chars[i].exp +
                     " " + P.chars[i].hp +
                     " " + P.chars[i].sp, 10, 20 + 20 * (i + 2));
         }

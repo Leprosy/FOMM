@@ -15,8 +15,8 @@ public class Char {
     public byte clss;
     public byte race;
 
-    public byte hp;
-    public byte sp;
+    public short hp;
+    public short sp;
     
     public byte str;
     public byte wis;
@@ -37,7 +37,7 @@ public class Char {
     public byte thievery;
 
     public byte level;
-    public byte exp;
+    public int exp;
     public byte att;
 
     public ArrayList awards;
