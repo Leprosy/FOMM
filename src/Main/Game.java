@@ -11,7 +11,7 @@ import java.io.FileInputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
-import javazoom.jl.player.Player;
+//import javazoom.jl.player.Player;
 
 /**
  *
@@ -27,7 +27,7 @@ public final class Game extends javax.swing.JFrame {
     public static short dx;
     public static short dy;
     public static byte status;
-    public static Player mp3;
+    //public static Player mp3;
 
     public final static short T_SIZE = 20;
 
@@ -37,6 +37,8 @@ public final class Game extends javax.swing.JFrame {
     public final static byte IS_CUTSCENE    = 4;
     public final static byte IS_PARTYSTATUS = 5;
     public final static byte IS_QUESTS      = 6;
+    public final static byte IS_COMBAT      = 7;
+
 
     public Game() {
         initComponents();
@@ -380,11 +382,13 @@ public final class Game extends javax.swing.JFrame {
             RPG.Tile tmp = Game.map.tile(Game.party.X + Game.dx, Game.party.Y + Game.dy);
 
             if (tmp != null) {
-                if (tmp.flags[RPG.Tile.IMPASSABLE] || //Tile is impassable
+                if (Game.map.canReach(Game.party))
+                /*if (tmp.flags[RPG.Tile.IMPASSABLE] || //Tile is impassable
                     (tmp.flags[RPG.Tile.WATER] && !Game.party.canSwim()) || //Tile is water
                     (tmp.flags[RPG.Tile.DENSE_TREES] && !Game.party.canPathFind()) || //Tile is dense forest
                     (tmp.flags[RPG.Tile.MOUNTAIN] && !Game.party.canMountain()) //Mountaineering
-                        ) {
+                        )  */
+                {
                     Game.dx = 0;
                     Game.dy = 0;
                 }
@@ -803,7 +807,7 @@ class Mapview extends javax.swing.JPanel {
         for (int i = 0; i < Game.map.monsters.length; ++i) {
             RPG.Monster MN = Game.map.monsters[i];
             g.setColor(Color.RED);
-            g.drawString(MN.total + "", (MN.X * Game.T_SIZE) + 10, (MN.Y * Game.T_SIZE) + 5);
+            g.drawString(MN.total + "", (MN.X * Game.T_SIZE) + 8, (MN.Y * Game.T_SIZE) + 15);
         }
     }
 

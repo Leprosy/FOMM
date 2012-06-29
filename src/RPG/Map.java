@@ -91,7 +91,7 @@ public class Map {
         //Monsters
         this.monsters = new Monster[5];
         for (int i = 0; i < 5; ++i) {
-            this.monsters[i] = new Monster((byte)(Math.random() * 15), (byte)(Math.random() * 15));
+            this.monsters[i] = new Monster((byte)(Math.random() * 15), (byte)(Math.random() * 15), "Giant cat");
         }
 
         // Dispose all the resources after using them
@@ -104,6 +104,10 @@ public class Map {
         } catch (Exception e) {
             return null;
         }
+    }
+    
+    public boolean canReach(Party P) {
+        return true;
     }
 
     public Object[] event(int i, int j) {
