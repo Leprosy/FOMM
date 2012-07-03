@@ -379,32 +379,22 @@ public final class Game extends javax.swing.JFrame {
          * Colisions, impassables & another conditions of map tiles, in case you're moving 
          */
         if (Game.dx!=0 || Game.dy!=0) {
-            RPG.Tile tmp = Game.map.tile(Game.party.X + Game.dx, Game.party.Y + Game.dy);
-
-            if (tmp != null) {
-                if (Game.map.canReach(Game.party))
-                /*if (tmp.flags[RPG.Tile.IMPASSABLE] || //Tile is impassable
-                    (tmp.flags[RPG.Tile.WATER] && !Game.party.canSwim()) || //Tile is water
-                    (tmp.flags[RPG.Tile.DENSE_TREES] && !Game.party.canPathFind()) || //Tile is dense forest
-                    (tmp.flags[RPG.Tile.MOUNTAIN] && !Game.party.canMountain()) //Mountaineering
-                        )  */
-                {
-                    Game.dx = 0;
-                    Game.dy = 0;
-                }
-
-                Game.party.X += Game.dx;
-                Game.party.Y += Game.dy;
-
+            if (!Game.map.canReach(Game.party, Game.dx, Game.dy)) {
                 Game.dx = 0;
                 Game.dy = 0;
+            }
 
-                /* Move monsters */
-                for (int i = 0; i < Game.map.monsters.length; ++i) {
-                    RPG.Monster MN = Game.map.monsters[i];
-                    
-                    System.out.println(MN.X + "");
-                }
+            Game.party.X += Game.dx;
+            Game.party.Y += Game.dy;
+
+            Game.dx = 0;
+            Game.dy = 0;
+
+            /* Move monsters */
+            for (int i = 0; i < Game.map.monsters.length; ++i) {
+                RPG.Monster MN = Game.map.monsters[i];
+
+                //System.out.println(MN.X + "");
             }
         }
 

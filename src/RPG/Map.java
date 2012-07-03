@@ -106,7 +106,16 @@ public class Map {
         }
     }
     
-    public boolean canReach(Party P) {
+    public boolean canReach(Party P, int dx, int dy) {
+        Tile tmp = this.tile(P.X + dx, P.Y + dy);
+
+        if (tmp.flags[RPG.Tile.IMPASSABLE] || //Tile is impassable
+            (tmp.flags[RPG.Tile.WATER] && !P.canSwim()) || //Tile is water
+            (tmp.flags[RPG.Tile.DENSE_TREES] && !P.canPathFind()) || //Tile is dense forest
+            (tmp.flags[RPG.Tile.MOUNTAIN] && !P.canMountain()) //Mountaineering
+                ) {
+            return false;
+        }
         return true;
     }
 
