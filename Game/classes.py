@@ -6,8 +6,9 @@ import json
 
 class Map:
     def __init__(self, filename):
-        print filename
-
+        data = open(filename).read()
+        data = json.loads(data)
+        self.data = data
 
 #class Point:
 #    pass

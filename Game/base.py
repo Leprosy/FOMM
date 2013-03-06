@@ -28,8 +28,10 @@ class Game(pyglet.window.Window):
 
     def init_game(self):
         #Load or start a new one?
-        self.map = Map(self.config_data['game_res'] + '/maps')
-        
+        self.map = Map(self.config_data['game_res'] + '/maps/map1.json')
+
+        print self.map.data["name"]
+        print self.map.data["floor"]
 
     def draw_gameGUI(self):
         self.clock.draw()
