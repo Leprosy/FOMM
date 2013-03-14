@@ -1,0 +1,17 @@
+[
+    {
+        "name": "tree"
+    },
+    {
+        "name": "forest",
+        "skill": "2xpathfinder"
+    },
+    {
+        "name": "mountain",
+        "skill": "2xmountaineer"
+    },
+    {
+        "name": "wall",
+        "impassable": True
+    }
+]
