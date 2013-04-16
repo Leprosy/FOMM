@@ -10,8 +10,6 @@ class Map:
         self.name = data["name"]
         self.tiles = []
 
-        print cfg.title
-
         #Definitions
         self.defs = json.loads(open(filename).read())
 
@@ -28,16 +26,15 @@ class Map:
 
         for i in range(0, len(self.tiles)):
             for j in range(0, len(self.tiles[i])):
-                pyglet.text.Label("<%s>" % self.tiles[i][j].thing,
-                          font_name="Arial",
-                          font_size=8,
-                          x=j * size, y=i * size,
-                          anchor_x="center", anchor_y="center").draw()
-
                 self.tiles[i][j].render()
 
 
 class Tile:
+    defs = {
+        "floors": json.load(open(cfg.game_res + '/defs/floors.json')),
+        "things": json.load(open(cfg.game_res + '/defs/things.json')),
+    }
+
     def __init__(self, floor, thing, x, y):
         self.floor = floor
         self.thing = thing
@@ -62,3 +59,8 @@ class Tile:
                             60 * b, 200, 10,
                             60 * b, 200, 10))
                             )
+        pyglet.text.Label("<%s>" % self.defs["things"][self.thing]["name"],
+                  font_name="Arial",
+                  font_size=8,
+                  x=j * size, y=i * size,
+                  anchor_x="center", anchor_y="center").draw()

@@ -12,6 +12,6 @@
     },
     {
         "name": "wall",
-        "impassable": True
+        "impassable": true
     }
 ]
