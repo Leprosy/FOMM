@@ -1,5 +1,5 @@
 import pyglet
-import json
+import cfg
 import maps
 from pyglet.window import mouse, key
 
@@ -8,13 +8,11 @@ class Game(pyglet.window.Window):
     '''
     Main definitions and elements for the game
     '''
-    def __init__(self, cfg):
-        super(Game, self).__init__(cfg["res"][0], cfg["res"][1],
-                                   caption=cfg['title'], vsync=False)
-
+    def __init__(self):
+        super(Game, self).__init__(cfg.res[0], cfg.res[1],
+                                   caption=cfg.title, vsync=False)
         #Environment setup
-        self.cfg = cfg
-        pyglet.resource.path = [self.cfg['game_res']]
+        pyglet.resource.path = [cfg.game_res]
         pyglet.resource.reindex()
 
         #Global attributes
@@ -24,7 +22,7 @@ class Game(pyglet.window.Window):
 
     def init_game(self):
         #Load or start a new one?
-        self.map = maps.Map(self.cfg['game_res'] + '/maps/map1.json')
+        self.map = maps.Map(cfg.game_res + '/maps/map1.json')
 
         #Start
         self.inGame = True
@@ -100,6 +98,5 @@ class Game(pyglet.window.Window):
 Begin the game...
 '''
 if __name__ == '__main__':
-    config = json.load(open('config.json'))
-    G = Game(config)
+    G = Game()
     G.game_start()
