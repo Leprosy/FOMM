@@ -1,6 +1,7 @@
 import pyglet
 import cfg
 import maps
+import player
 from pyglet.window import mouse, key
 
 
@@ -18,7 +19,7 @@ class Game(pyglet.window.Window):
         #Global attributes
         self.inGame = False
         self.map = None
-        self.party = {"x": 0, "y": 0}
+        self.party = player.Party(0, 0)
 
     def init_game(self):
         #Load or start a new one?
@@ -56,7 +57,15 @@ class Game(pyglet.window.Window):
             #Game logic
             #Map render
             self.map.render()
-            pass
+            #Monsters
+            #Party
+            self.party.render()
+            #gui
+            pyglet.text.Label("Party = %d, %d" % (self.party.x, self.party.y),
+                  font_name="Arial",
+                  font_size=8,
+                  x=50, y=500,
+                  anchor_x="right", anchor_y="top").draw()
         else:
             #Main menu
             self.draw_mainmenu()
@@ -85,7 +94,15 @@ class Game(pyglet.window.Window):
         #In game keys
         else:
             #Game logic
-            pass
+            #Party movement
+            if symbol == key.UP:
+                self.party.y += 1
+            if symbol == key.DOWN:
+                self.party.y -= 1
+            if symbol == key.LEFT:
+                self.party.x -= 1
+            if symbol == key.RIGHT:
+                self.party.x += 1
 
     #Starts
     def game_start(self):

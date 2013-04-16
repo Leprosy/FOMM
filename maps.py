@@ -22,8 +22,6 @@ class Map:
             self.tiles.append(aux)
 
     def render(self):
-        size = 64
-
         for i in range(0, len(self.tiles)):
             for j in range(0, len(self.tiles[i])):
                 self.tiles[i][j].render()
@@ -52,17 +50,16 @@ class Tile:
         self.y = y
 
     def render(self):
-        size = 64
-
         i = self.x
         j = self.y
 
-        self.sprites["floors"][self.floor].x = i * size
-        self.sprites["floors"][self.floor].y = j * size
+        self.sprites["floors"][self.floor].x = j * cfg.size
+        self.sprites["floors"][self.floor].y = i * cfg.size
         self.sprites["floors"][self.floor].draw()
 
-        pyglet.text.Label("<%s>" % self.defs["things"][self.thing]["name"],
+        pyglet.text.Label("<%s>" % self.defs["floors"][self.floor]["name"],
                   font_name="Arial",
                   font_size=8,
-                  x=j * size, y=i * size,
+                  x=j * cfg.size + cfg.size / 2,
+                  y=i * cfg.size + cfg.size / 2,
                   anchor_x="center", anchor_y="center").draw()
