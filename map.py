@@ -1,6 +1,5 @@
 import pyglet
-import math
-import time
+import main.Game as Game
 import json
 
 
@@ -11,7 +10,7 @@ class Map:
         self.name = data["name"]
         self.tiles = []
 
-        print Game.getconfig()
+        print Game.getcfg()
 
         #Definitions
         self.defs = json.loads(open())

@@ -8,8 +8,8 @@ class Game(pyglet.window.Window):
     Main definitions and elements for the game
     '''
     def __init__(self, cfg):
-        super(Game, self).__init__(800, 600, caption=cfg['title'],
-                                   vsync=False)
+        super(Game, self).__init__(cfg["res"][0], cfg["res"][1],
+                                   caption=cfg['title'], vsync=False)
 
         #Environment setup
         self.cfg = cfg
