@@ -10,6 +10,9 @@
         "name": "stone"
     },
     {
+        "name": "grass"
+    },
+    {
         "name": "fire",
         "damage": "1d6"
     },
