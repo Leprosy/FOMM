@@ -1,5 +1,6 @@
 import pyglet
 import json
+import maps
 from pyglet.window import mouse, key
 
 
@@ -21,13 +22,9 @@ class Game(pyglet.window.Window):
         self.map = None
         self.party = {"x": 0, "y": 0}
 
-    @staticmethod
-    def getcfg(self):
-        return self.cfg
-
     def init_game(self):
         #Load or start a new one?
-        #self.map = Map(self.config_data['game_res'] + '/maps/map1.json')
+        self.map = maps.Map(self.cfg['game_res'] + '/maps/map1.json')
 
         #Start
         self.inGame = True
@@ -59,7 +56,6 @@ class Game(pyglet.window.Window):
 
         if self.inGame:
             #Game logic
-
             #Map render
             self.map.render()
             pass

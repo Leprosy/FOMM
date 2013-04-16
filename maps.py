@@ -1,5 +1,4 @@
 import pyglet
-import main.Game as Game
 import json
 
 
@@ -10,10 +9,8 @@ class Map:
         self.name = data["name"]
         self.tiles = []
 
-        print Game.getcfg()
-
         #Definitions
-        self.defs = json.loads(open())
+        self.defs = json.loads(open(filename).read())
 
         for i in range(0, len(data["floor"])):
             aux = []
