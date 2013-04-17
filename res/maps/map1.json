@@ -19,5 +19,30 @@
         [0, 0, 0, 0]
     ],
     "flags": [],
-    "init": [0, 0]
+    "init": [0, 0],
+
+    "script": {
+        "2,2": [
+	        {
+	            "event": "alert",
+	            "data": {
+	                "msg": "This is a test of the alert event"
+	            }
+	        },
+            {
+                "event": "alert",
+                "data": {
+                    "msg": "Please, close this messagebox"
+                }
+            }
+        ],
+        "4,0": [
+            {
+                "event": "alert",
+                "data": {
+                    "msg": "You are in 4,0"
+                }
+            }
+        ]
+    }
 }

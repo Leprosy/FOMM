@@ -7,12 +7,11 @@ class Gui:
         self.window = window
 
     def alert(self, string):
-        print "Utils.alert - %s" % string
-        pyglet.text.Label(string,
+        pyglet.text.Label(string + "(PRESS ESC)",
                           font_name="Arial",
                           font_size=12,
-                          x=cfg.size / 2,
-                          y=cfg.size / 2,
+                          x=cfg.resolution[0] / 2,
+                          y=cfg.resolution[1] / 2,
                           anchor_x="center", anchor_y="center").draw()
 
     def draw_gui(self):

@@ -4,11 +4,15 @@ import cfg
 
 
 class Map:
-    def __init__(self, filename):
+    def __init__(self, filename, window):
         data = open(filename).read()
         data = json.loads(data)
+        self.window = window
         self.name = data["name"]
         self.tiles = []
+        self.script = data["script"]
+        self.scr_line = 0
+        self.scr_coord = None
 
         #Definitions
         self.defs = json.load(open(filename))
@@ -25,6 +29,26 @@ class Map:
         for i in range(0, len(self.tiles)):
             for j in range(0, len(self.tiles[i])):
                 self.tiles[i][j].render()
+
+    def run_script(self, coord):
+        if coord != self.scr_coord:
+            self.scr_line = 0
+            self.scr_coord = coord
+
+        script = self.script[coord]
+        inst = script[self.scr_line]
+        print "executing %d => %s" % (self.scr_line, inst)
+
+        if inst["event"] == 'alert':
+            self.window.message = inst["data"]["msg"]
+            self.window.status = cfg._IN_GAME_ALERT
+        else:
+            print "undefined_event"
+
+        if self.scr_line < len(script) - 1:
+            self.scr_line += 1
+        else:
+            self.scr_line = 0
 
 
 class Tile:
