@@ -2,6 +2,7 @@ import pyglet
 import cfg
 import maps
 import player
+import gui
 from pyglet.window import mouse, key
 
 
@@ -18,7 +19,9 @@ class Game(pyglet.window.Window):
 
         #Global attributes
         self.inGame = False
+        self.inDialog = False
         self.map = None
+        self.gui = gui.Gui(self)
         self.party = player.Party(0, 0)
 
     def init_game(self):
@@ -27,27 +30,6 @@ class Game(pyglet.window.Window):
 
         #Start
         self.inGame = True
-
-    def draw_gameGUI(self):
-        #self.clock.draw()
-        pass
-
-    def draw_mainmenu(self):
-        pyglet.text.Label("FOMM",
-                          font_name='Arial',
-                          font_size=32,
-                          x=100, y=300,
-                          anchor_x='left', anchor_y='center').draw()
-        pyglet.text.Label("< Press Spacebar to start >",
-                          font_name='Arial',
-                          font_size=14,
-                          x=100, y=250,
-                          anchor_x='left', anchor_y='center').draw()
-        pyglet.text.Label("< Press ESC to exit >",
-                          font_name='Arial',
-                          font_size=14,
-                          x=100, y=230,
-                          anchor_x='left', anchor_y='center').draw()
 
     def update(self, secs):
         #Clear window
@@ -61,14 +43,11 @@ class Game(pyglet.window.Window):
             #Party
             self.party.render()
             #gui
-            pyglet.text.Label("Party = %d, %d" % (self.party.x, self.party.y),
-                  font_name="Arial",
-                  font_size=8,
-                  x=50, y=500,
-                  anchor_x="right", anchor_y="top").draw()
+            self.gui.draw_gui()
+
         else:
             #Main menu
-            self.draw_mainmenu()
+            self.gui.draw_mainmenu()
 
     '''
     Event handlers
@@ -103,6 +82,8 @@ class Game(pyglet.window.Window):
                 self.party.x -= 1
             if symbol == key.RIGHT:
                 self.party.x += 1
+            if symbol == key.SPACE:
+                self.utils.alert("FUCK IT's A SPACE bAr!!!")
 
     #Starts
     def game_start(self):
