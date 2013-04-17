@@ -31,22 +31,24 @@ class Map:
                 self.tiles[i][j].render()
 
     def run_script(self, coord):
-        if coord != self.scr_coord:
-            self.scr_line = 0
-            self.scr_coord = coord
+        if coord in self.script:
+            if coord != self.scr_coord:
+                self.scr_line = 0
+                self.scr_coord = coord
 
-        script = self.script[coord]
-        inst = script[self.scr_line]
-        print "executing %d => %s" % (self.scr_line, inst)
+            script = self.script[coord]
 
-        if inst["event"] == 'alert':
-            self.window.message = inst["data"]["msg"]
-            self.window.status = cfg._IN_GAME_ALERT
-        else:
-            print "undefined_event"
+            if self.scr_line <= len(script) - 1:
+                inst = script[self.scr_line]
+                print "executing %d => %s" % (self.scr_line, inst)
 
-        if self.scr_line < len(script) - 1:
-            self.scr_line += 1
+                if inst["event"] == 'alert':
+                    self.window.message = inst["data"]["msg"]
+                    self.window.status = cfg._IN_GAME_ALERT
+                else:
+                    print "undefined_event"
+
+                self.scr_line += 1
         else:
             self.scr_line = 0
 

@@ -57,11 +57,9 @@ class Game(pyglet.window.Window):
                 #gui
                 self.gui.draw_gui()
 
-                #scripts in  map
+                #scripts in map
                 script_coord = "%d,%d" % (self.party.x, self.party.y)
-
-                if script_coord in self.map.script:
-                    self.map.run_script(script_coord)
+                self.map.run_script(script_coord)
 
                 #alerts, messages, prompts and other user interactions
                 if self.status == cfg._IN_GAME_ALERT:
@@ -105,7 +103,7 @@ class Game(pyglet.window.Window):
 
             if self.status == cfg._IN_GAME_ALERT:
                 if symbol == key.ESCAPE:
-                    self.need_update = False
+                    self.need_update = True
                     self.status = cfg._IN_GAME
 
     #Starts
