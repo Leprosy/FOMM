@@ -20,6 +20,7 @@ class Game(pyglet.window.Window):
         #Global attributes
         self.inGame = False
         self.inDialog = False
+        self.status = cfg._IN_MAINMENU
         self.map = None
         self.gui = gui.Gui(self)
         self.party = player.Party(0, 0)
@@ -29,13 +30,16 @@ class Game(pyglet.window.Window):
         self.map = maps.Map(cfg.game_res + '/maps/map1.json')
 
         #Start
-        self.inGame = True
+        self.status = cfg._IN_GAME
 
     def update(self, secs):
         #Clear window
         self.clear()
 
-        if self.inGame:
+        if self.status == cfg._IN_MAINMENU:
+            #Main menu
+            self.gui.draw_mainmenu()
+        else:
             #Game logic
             #Map render
             self.map.render()
@@ -44,10 +48,6 @@ class Game(pyglet.window.Window):
             self.party.render()
             #gui
             self.gui.draw_gui()
-
-        else:
-            #Main menu
-            self.gui.draw_mainmenu()
 
     '''
     Event handlers
@@ -64,7 +64,7 @@ class Game(pyglet.window.Window):
 
     def on_key_press(self, symbol, mod):
         #Main menu keys
-        if self.inGame is False:
+        if self.status == cfg._IN_MAINMENU:
             if symbol == key.SPACE:
                 self.init_game()
             if symbol == key.ESCAPE:
@@ -83,7 +83,7 @@ class Game(pyglet.window.Window):
             if symbol == key.RIGHT:
                 self.party.x += 1
             if symbol == key.SPACE:
-                self.utils.alert("FUCK IT's A SPACE bAr!!!")
+                self.gui.alert("FUCK IT's A SPACE bAr!!!")
 
     #Starts
     def game_start(self):
