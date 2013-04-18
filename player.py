@@ -17,6 +17,8 @@ class Party:
         self.food = 20
         self.gold = 2000
 
+        self.characters = []
+
     def render(self):
         angle = ["^", ">", "v", "<"]
         pyglet.text.Label("1P %s" % angle[self.angle],
@@ -83,3 +85,8 @@ class Party:
         #Set the new position
         self.x = self.new_x
         self.y = self.new_y
+
+
+class Character:
+    def __init__(self, data):
+        self.data = data
