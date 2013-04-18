@@ -90,14 +90,18 @@ class Game(pyglet.window.Window):
             if self.status == cfg._IN_GAME:
                 self.need_update = True
 
-                if symbol == key.UP:
-                    self.party.y += 1
-                if symbol == key.DOWN:
-                    self.party.y -= 1
-                if symbol == key.LEFT:
-                    self.party.x -= 1
-                if symbol == key.RIGHT:
-                    self.party.x += 1
+                if symbol == key.NUM_8:
+                    self.party.down()
+                if symbol == key.NUM_2:
+                    self.party.up()
+                if symbol == key.NUM_4:
+                    self.party.left()
+                if symbol == key.NUM_6:
+                    self.party.right()
+                if symbol == key.NUM_7:
+                    self.party.rotate_left()
+                if symbol == key.NUM_9:
+                    self.party.rotate_right()
                 if symbol == key.ESCAPE:
                     quit()
 

@@ -7,7 +7,7 @@ class Gui:
         self.window = window
 
     def alert(self, string):
-        pyglet.text.Label(string + "(PRESS ESC)",
+        pyglet.text.Label(string + " (Press ESC)",
                           font_name="Arial",
                           font_size=12,
                           x=cfg.resolution[0] / 2,

@@ -45,6 +45,9 @@ class Map:
                 if inst["event"] == 'alert':
                     self.window.message = inst["data"]["msg"]
                     self.window.status = cfg._IN_GAME_ALERT
+                elif inst["event"] == 'prompt':
+                    self.window.message = inst["data"]["msg"]
+                    self.window.status = cfg._IN_GAME_ALERT
                 else:
                     print "undefined_event"
 
