@@ -55,6 +55,15 @@ class Map:
         else:
             self.scr_line = 0
 
+    def get_tile(self, x, y):
+        return self.tiles[y][x]
+
+    def get_height(self):
+        return len(self.tiles)
+
+    def get_width(self):
+        return len(self.tiles[0])
+
 
 class Tile:
     defs = {
@@ -86,9 +95,15 @@ class Tile:
         self.sprites["floors"][self.floor].y = i * cfg.size
         self.sprites["floors"][self.floor].draw()
 
-        pyglet.text.Label("<%s>" % self.defs["floors"][self.floor]["name"],
-                  font_name="Arial",
-                  font_size=8,
-                  x=j * cfg.size + cfg.size / 2,
-                  y=i * cfg.size + cfg.size / 2,
-                  anchor_x="center", anchor_y="center").draw()
+    def get_floor_data(self):
+        return self.defs["floors"][self.floor]
+
+    def get_thing_data(self):
+        return self.defs["things"][self.thing]
+
+#        pyglet.text.Label("<%s>" % self.defs["floors"][self.floor]["name"],
+#                  font_name="Arial",
+#                  font_size=8,
+#                  x=j * cfg.size + cfg.size / 2,
+#                  y=i * cfg.size + cfg.size / 2,
+#                  anchor_x="center", anchor_y="center").draw()

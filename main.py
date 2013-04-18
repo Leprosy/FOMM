@@ -25,7 +25,7 @@ class Game(pyglet.window.Window):
         self.need_update = True
         self.map = None
         self.gui = gui.Gui(self)
-        self.party = player.Party(0, 0)
+        self.party = player.Party(1, 5, self)
 
     def init_game(self):
         #Load or start a new one?
