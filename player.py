@@ -1,5 +1,4 @@
 import pyglet
-import json
 import cfg
 
 
@@ -53,8 +52,8 @@ class Party:
 
     def check_movement(self):
         wmap = self.window.map
-        print wmap.get_tile(self.new_x, self.new_y).get_floor_data()
-        print wmap.get_tile(self.new_x, self.new_y).get_thing_data()
+        floor = wmap.get_tile(self.new_x, self.new_y).get_floor_data()
+        thing = wmap.get_tile(self.new_x, self.new_y).get_thing_data()
 
         #Boundaries of the map
         if self.new_x < 0:
@@ -66,6 +65,14 @@ class Party:
             self.new_x = self.window.map.get_width() - 1
         if self.new_y > self.window.map.get_height() - 1:
             self.new_y = self.window.map.get_height() - 1
+
+        #Geo of the new tile
+        if "impassable" in floor and floor["impassable"] == True:
+            self.new_x = self.x
+            self.new_y = self.y
+        if "impassable" in thing and thing["impassable"] == True:
+            self.new_x = self.x
+            self.new_y = self.y
 
         #Set the new position
         self.x = self.new_x

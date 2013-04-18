@@ -7,6 +7,7 @@ class Gui:
         self.window = window
 
     def alert(self, string):
+        cfg.debug("gui.alert:%s" % string)
         pyglet.text.Label(string + " (Press ESC)",
                           font_name="Arial",
                           font_size=12,
@@ -20,7 +21,7 @@ class Gui:
               font_name="Arial",
               font_size=8,
               x=50, y=500,
-              anchor_x="right", anchor_y="top").draw()
+              anchor_x="left", anchor_y="top").draw()
 
     def draw_mainmenu(self):
         pyglet.text.Label("FOMM",

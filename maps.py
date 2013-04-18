@@ -5,6 +5,7 @@ import cfg
 
 class Map:
     def __init__(self, filename, window):
+        cfg.debug("Opening %s map..." % filename)
         data = open(filename).read()
         data = json.loads(data)
         self.window = window
@@ -40,7 +41,7 @@ class Map:
 
             if self.scr_line <= len(script) - 1:
                 inst = script[self.scr_line]
-                print "executing %d => %s" % (self.scr_line, inst)
+                cfg.debug("Trying to execute %s, line %d" % (inst, self.scr_line))
 
                 if inst["event"] == 'alert':
                     self.window.message = inst["data"]["msg"]
@@ -49,7 +50,7 @@ class Map:
                     self.window.message = inst["data"]["msg"]
                     self.window.status = cfg._IN_GAME_ALERT
                 else:
-                    print "undefined_event"
+                    cfg.debug("Attemting to run an undefined event")
 
                 self.scr_line += 1
         else:
@@ -77,6 +78,7 @@ class Tile:
 
     #init code
     for f in defs["floors"]:
+        cfg.debug("Loading %s floor img" % f["name"])
         img = pyglet.resource.image(cfg.game_res + '/img/floors/%s.png'
                                     % f["name"])
         sprites["floors"].append(pyglet.sprite.Sprite(img))

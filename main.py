@@ -15,11 +15,13 @@ class Game(pyglet.window.Window):
         super(Game, self).__init__(cfg.resolution[0], cfg.resolution[1],
                                    caption=cfg.title, vsync=False)
         #Environment setup
+        cfg.debug("Initializing environment")
         pyglet.resource.path = [cfg.game_res]
         pyglet.resource.reindex()
         random.seed()
 
         #Global attributes
+        cfg.debug("Initializing basic objects")
         self.status = cfg._IN_MAINMENU
         self.message = None
         self.need_update = True
@@ -28,7 +30,9 @@ class Game(pyglet.window.Window):
         self.party = player.Party(1, 5, self)
 
     def init_game(self):
-        #Load or start a new one?
+        cfg.debug("Init game")
+
+        #Load or start a new one?        
         self.map = maps.Map(cfg.game_res + '/maps/map1.json', self)
 
         #Start
@@ -43,7 +47,7 @@ class Game(pyglet.window.Window):
             self.gui.draw_mainmenu()
         else:
             if self.need_update:
-                print "updating game"
+                cfg.debug("Status updated...")
                 #Clear window
                 self.clear()
 
@@ -121,5 +125,6 @@ class Game(pyglet.window.Window):
 Begin the game...
 '''
 if __name__ == '__main__':
+    cfg.debug("Initializing game")
     G = Game()
     G.game_start()

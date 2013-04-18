@@ -1,7 +1,7 @@
 [
     {
         "name": "water",
-        "water": true
+        "impassable": true
     },
     {
         "name": "dirt"

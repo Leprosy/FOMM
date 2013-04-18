@@ -1,3 +1,5 @@
+import time
+
 #Config parameters
 version = "0.1"
 game_res = "res"
@@ -10,3 +12,7 @@ _IN_MAINMENU = 0
 _IN_GAME = 1
 _IN_GAME_ALERT = 2
 _IN_GAME_DIALOG = 3
+
+
+def debug(string):
+    print "[%s] - %s" % (time.asctime(), string)
