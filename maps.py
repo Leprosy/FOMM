@@ -82,6 +82,11 @@ class Tile:
         img = pyglet.resource.image(cfg.game_res + '/img/floors/%s.png'
                                     % f["name"])
         sprites["floors"].append(pyglet.sprite.Sprite(img))
+    for f in defs["things"]:
+        cfg.debug("Loading %s thing img" % f["name"])
+        img = pyglet.resource.image(cfg.game_res + '/img/things/%s.png'
+                                    % f["name"])
+        sprites["things"].append(pyglet.sprite.Sprite(img))
 
     def __init__(self, floor, thing, x, y):
         self.floor = floor
@@ -93,15 +98,21 @@ class Tile:
         i = self.x
         j = self.y
 
+        #Draw tile: Floor + Thing
         self.sprites["floors"][self.floor].x = j * cfg.size
         self.sprites["floors"][self.floor].y = i * cfg.size
         self.sprites["floors"][self.floor].draw()
+
+        if self.thing > 0:
+            self.sprites["things"][self.thing - 1].x = j * cfg.size
+            self.sprites["things"][self.thing - 1].y = i * cfg.size
+            self.sprites["things"][self.thing - 1].draw()
 
     def get_floor_data(self):
         return self.defs["floors"][self.floor]
 
     def get_thing_data(self):
-        return self.defs["things"][self.thing]
+        return self.defs["things"][self.thing - 1]
 
 #        pyglet.text.Label("<%s>" % self.defs["floors"][self.floor]["name"],
 #                  font_name="Arial",

@@ -52,8 +52,6 @@ class Party:
 
     def check_movement(self):
         wmap = self.window.map
-        floor = wmap.get_tile(self.new_x, self.new_y).get_floor_data()
-        thing = wmap.get_tile(self.new_x, self.new_y).get_thing_data()
 
         #Boundaries of the map
         if self.new_x < 0:
@@ -65,6 +63,9 @@ class Party:
             self.new_x = self.window.map.get_width() - 1
         if self.new_y > self.window.map.get_height() - 1:
             self.new_y = self.window.map.get_height() - 1
+6
+        floor = wmap.get_tile(self.new_x, self.new_y).get_floor_data()
+        thing = wmap.get_tile(self.new_x, self.new_y).get_thing_data()
 
         #Geo of the new tile
         if "impassable" in floor and floor["impassable"] == True:

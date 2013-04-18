@@ -8,10 +8,9 @@
     },
     {
         "name": "mountain",
-        "skill": "2xmountaineer"
+        "impassable": true
     },
     {
-        "name": "wall",
-        "impassable": true
+        "name": "fountain"
     }
 ]
