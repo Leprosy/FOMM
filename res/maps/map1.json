@@ -36,11 +36,17 @@
                 }
             }
         ],
-        "4,0": [
+        "3,0": [
             {
                 "event": "alert",
                 "data": {
-                    "msg": "You are in 4,0"
+                    "msg": "You are in 3,0"
+                }
+            },
+            {
+                "event": "teleport",
+                "data": {
+                    "x": 0, "y": 6
                 }
             }
         ]

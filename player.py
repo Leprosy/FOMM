@@ -50,6 +50,11 @@ class Party:
         self.angle -= 1
         self.angle = self.angle % 4
 
+    def go_to(self, x, y):
+        self.new_x = x
+        self.new_y = y
+        self.check_movement()
+
     def check_movement(self):
         wmap = self.window.map
 

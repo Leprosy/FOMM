@@ -16,3 +16,7 @@ _IN_GAME_DIALOG = 3
 
 def debug(string):
     print "[%s] - %s" % (time.asctime(), string)
+
+
+def error(string):
+    print "[%s] - ERROR : %s" % (time.asctime(), string)

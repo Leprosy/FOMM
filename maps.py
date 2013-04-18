@@ -41,16 +41,20 @@ class Map:
 
             if self.scr_line <= len(script) - 1:
                 inst = script[self.scr_line]
-                cfg.debug("Trying to execute %s, line %d" % (inst, self.scr_line))
+                cfg.debug("Executing %s, line %d" % (inst, self.scr_line))
 
+                #Events interpreter
                 if inst["event"] == 'alert':
                     self.window.message = inst["data"]["msg"]
                     self.window.status = cfg._IN_GAME_ALERT
                 elif inst["event"] == 'prompt':
                     self.window.message = inst["data"]["msg"]
                     self.window.status = cfg._IN_GAME_ALERT
+                elif inst["event"] == 'teleport':
+                    self.window.party.go_to(inst["data"]["x"], inst["data"]["y"])
+                    self.window.need_update = True
                 else:
-                    cfg.debug("Attemting to run an undefined event")
+                    cfg.error("Attempting to run an undefined event")
 
                 self.scr_line += 1
         else:
@@ -113,10 +117,3 @@ class Tile:
 
     def get_thing_data(self):
         return self.defs["things"][self.thing - 1]
-
-#        pyglet.text.Label("<%s>" % self.defs["floors"][self.floor]["name"],
-#                  font_name="Arial",
-#                  font_size=8,
-#                  x=j * cfg.size + cfg.size / 2,
-#                  y=i * cfg.size + cfg.size / 2,
-#                  anchor_x="center", anchor_y="center").draw()

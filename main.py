@@ -88,6 +88,7 @@ class Game(pyglet.window.Window):
             if symbol == key.SPACE:
                 self.init_game()
             if symbol == key.ESCAPE:
+                cfg.debug("We will leave from FOMM now. Cheers!")
                 quit()
         else:
             #In game keys
@@ -107,6 +108,7 @@ class Game(pyglet.window.Window):
                 if symbol == key.NUM_9:
                     self.party.rotate_right()
                 if symbol == key.ESCAPE:
+                    cfg.debug("Leaving FOMM now. Bye")
                     quit()
 
             if self.status == cfg._IN_GAME_ALERT:
