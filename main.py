@@ -30,10 +30,9 @@ class Game(pyglet.window.Window):
         self.gui = gui.Gui(self)
 
     def init_game(self):
-        cfg.debug("Init game")
-
         #Load or start a new one?
         #New game
+        cfg.debug("Starting a new game...")
         self.map = maps.Map(cfg.game_res + '/maps/map1.json', self)
         self.party = player.Party(1, 5, self)
         self.party.init_chars(cfg.game_res + '/defs/defparty.json')
@@ -130,6 +129,6 @@ class Game(pyglet.window.Window):
 Begin the game...
 '''
 if __name__ == '__main__':
-    cfg.debug("Initializing game")
     G = Game()
+    cfg.debug("Firing up the game")
     G.game_start()

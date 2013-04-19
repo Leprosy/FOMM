@@ -1,6 +1,7 @@
 import pyglet
 import json
 import cfg
+import FOMMscripting
 
 
 class Map:
@@ -13,6 +14,7 @@ class Map:
         self.tiles = []
         self.scr_line = 0
         self.scr_coord = None
+        self.interpreter = FOMMscripting.Interpreter()
 
         #Definitions
         self.defs = json.load(open(filename))
@@ -43,18 +45,7 @@ class Map:
                 cfg.debug("Executing %s, line %d" % (inst, self.scr_line))
 
                 #Events interpreter
-                if inst["event"] == 'alert':
-                    self.window.message = inst["data"]["msg"]
-                    self.window.status = cfg._IN_GAME_ALERT
-                elif inst["event"] == 'prompt':
-                    self.window.message = inst["data"]["msg"]
-                    self.window.status = cfg._IN_GAME_ALERT
-                elif inst["event"] == 'teleport':
-                    self.window.party.go_to(inst["data"]["x"], inst["data"]["y"])
-                    self.window.need_update = True
-                else:
-                    cfg.error("Attempting to run an undefined event")
-
+                self.interpreter.eval(inst, self.window)
                 self.scr_line += 1
         else:
             self.scr_line = 0
