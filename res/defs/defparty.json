@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Sir Leprosy",
+        "class": "paladin",
+        "hp": 15
+    },
+    {
+        "name": "Lady Aindir",
+        "class": "sorcerer",
+        "hp": 9
+    },
+    {
+        "name": "Edward",
+        "class": "rogue",
+        "hp": 11
+    }
+]

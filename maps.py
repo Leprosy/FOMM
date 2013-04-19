@@ -6,12 +6,11 @@ import cfg
 class Map:
     def __init__(self, filename, window):
         cfg.debug("Opening %s map..." % filename)
-        data = open(filename).read()
-        data = json.loads(data)
+        data = json.load(open(filename))
+        self.__dict__ = data
+
         self.window = window
-        self.name = data["name"]
         self.tiles = []
-        self.script = data["script"]
         self.scr_line = 0
         self.scr_coord = None
 

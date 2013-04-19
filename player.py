@@ -1,4 +1,5 @@
 import pyglet
+import json
 import cfg
 
 
@@ -18,6 +19,15 @@ class Party:
         self.gold = 2000
 
         self.characters = []
+
+    def init_chars(self, filename):
+        cfg.debug("Opening %s party definition..." % filename)
+        data = json.load(open(filename))
+
+        self.characters = []
+
+        for char in data:
+            self.characters.append(Character(char))
 
     def render(self):
         angle = ["^", ">", "v", "<"]
@@ -89,4 +99,5 @@ class Party:
 
 class Character:
     def __init__(self, data):
-        self.data = data
+        self.__dict__ = data
+        cfg.debug("Welcome %s" % self.name)

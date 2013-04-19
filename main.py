@@ -26,14 +26,17 @@ class Game(pyglet.window.Window):
         self.message = None
         self.need_update = True
         self.map = None
+        self.party = None
         self.gui = gui.Gui(self)
-        self.party = player.Party(1, 5, self)
 
     def init_game(self):
         cfg.debug("Init game")
 
-        #Load or start a new one?        
+        #Load or start a new one?
+        #New game
         self.map = maps.Map(cfg.game_res + '/maps/map1.json', self)
+        self.party = player.Party(1, 5, self)
+        self.party.init_chars(cfg.game_res + '/defs/defparty.json')
 
         #Start
         self.status = cfg._IN_GAME
