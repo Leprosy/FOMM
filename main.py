@@ -5,6 +5,7 @@ import player
 import gui
 import random
 from pyglet.window import mouse, key
+from simplui import *
 
 
 class Game(pyglet.window.Window):
@@ -70,11 +71,25 @@ class Game(pyglet.window.Window):
 
                 #alerts, messages, prompts and other user interactions
                 if self.status == cfg._IN_GAME_ALERT:
-                    self.gui.alert(self.message)
+                    frame = Frame(Theme('res/gui'),
+                                  w=cfg.resolution[0],
+                                  h=cfg.resolution[1])
+                    dia = Dialogue('Information', x=500, y=550, content=
+                                   FlowLayout(w=250,
+                                              children=[Label(self.message),
+                                                        Button('OK')]))
+
+                    frame.add(dia)
+                    self.push_handlers(frame)
+                    frame.draw()
+
 
     '''
     Event handlers
     '''
+    def button_action(self, button):
+        print button
+
     def on_mouse_motion(self, x, y, dx, dy):
         self.x = x
         self.y = y

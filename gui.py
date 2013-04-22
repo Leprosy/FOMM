@@ -1,5 +1,6 @@
 import pyglet
 import cfg
+from simplui import *
 
 
 class Gui:
@@ -8,12 +9,22 @@ class Gui:
 
     def alert(self, string):
         cfg.debug("gui.alert:%s" % string)
-        pyglet.text.Label(string + " (Press ESC)",
-                          font_name="Arial",
-                          font_size=12,
-                          x=cfg.resolution[0] / 2,
-                          y=cfg.resolution[1] / 2,
-                          anchor_x="center", anchor_y="center").draw()
+#        pyglet.text.Label(string + " (Press ESC)",
+#                          font_name="Arial",
+#                          font_size=12,
+#                          x=cfg.resolution[0] / 2,
+#                          y=cfg.resolution[1] / 2,
+#                          anchor_x="center", anchor_y="center").draw()
+
+        frame = Frame(Theme('res/gui'),
+                      w=cfg.resolution[0],
+                      h=cfg.resolution[1])
+        dia = Dialogue('Information', x=500, y=550, content=
+                       FlowLayout(w=250, children=[Label(string), Button('OK')]))
+
+        frame.add(dia)
+        self.window.push_handlers(frame)
+        frame.draw()
 
     def draw_gui(self):
         pyglet.text.Label("Party = %d, %d"
