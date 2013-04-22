@@ -118,7 +118,17 @@ class Game(pyglet.window.Window):
                     self.need_update = True
                     self.status = cfg._IN_GAME
 
-    #Starts
+    '''
+    Functions
+    '''
+    def load_map(self, mapname, x, y):
+        self.map = maps.Map('%s/maps/%s.json' % (cfg.game_res, mapname), self)
+        self.party.go_to(x, y)
+        self.need_update = True
+
+    '''
+    Starts
+    '''
     def game_start(self):
         pyglet.clock.schedule_interval(self.update, 1 / 60.0)
         pyglet.app.run()

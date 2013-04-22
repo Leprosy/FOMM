@@ -40,12 +40,13 @@
             {
                 "event": "alert",
                 "data": {
-                    "msg": "You are in 3,0"
+                    "msg": "We are leaving to map 2"
                 }
             },
             {
-                "event": "teleport",
+                "event": "teleport_map",
                 "data": {
+                    "map": "map2",
                     "x": 0, "y": 6
                 }
             }
