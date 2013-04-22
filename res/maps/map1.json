@@ -1,5 +1,6 @@
 {
     "name": "Town 1",
+    "music": ["town1", "town4"],
     "floor": [
         [0, 1, 1, 3],
         [5, 1, 1, 2],

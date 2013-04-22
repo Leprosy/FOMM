@@ -1,6 +1,7 @@
 import pyglet
 import json
 import cfg
+import random
 import FOMMscripting
 
 
@@ -14,6 +15,7 @@ class Map:
         self.tiles = []
         self.scr_line = 0
         self.scr_coord = None
+        self.music_player = None
         self.interpreter = FOMMscripting.Interpreter()
 
         #Definitions
@@ -49,6 +51,14 @@ class Map:
                 self.scr_line += 1
         else:
             self.scr_line = 0
+
+    def check_music(self):
+        if self.music_player is None or self.music_player.time == 0.0:
+            resource = cfg.game_res + '/snd/mus/%s.mp3' % random.choice(self.music)
+            self.music_player = pyglet.media.load(resource).play()
+
+    def stop_music(self):
+        self.music_player.stop()
 
     def get_tile(self, x, y):
         return self.tiles[y][x]

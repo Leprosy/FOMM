@@ -57,6 +57,7 @@ class Game(pyglet.window.Window):
                 #Game logic
                 #Map render
                 self.map.render()
+                self.map.check_music()
                 #Monsters
                 #Party
                 self.party.render()
@@ -122,6 +123,7 @@ class Game(pyglet.window.Window):
     Functions
     '''
     def load_map(self, mapname, x, y):
+        self.map.stop_music()
         self.map = maps.Map('%s/maps/%s.json' % (cfg.game_res, mapname), self)
         self.party.go_to(x, y)
         self.need_update = True
