@@ -9,6 +9,7 @@ class Gui:
 
     def alert(self, string):
         cfg.debug("gui.alert:%s" % string)
+
 #        pyglet.text.Label(string + " (Press ESC)",
 #                          font_name="Arial",
 #                          font_size=12,
@@ -19,12 +20,13 @@ class Gui:
         frame = Frame(Theme('res/gui'),
                       w=cfg.resolution[0],
                       h=cfg.resolution[1])
-        dia = Dialogue('Information', x=500, y=550, content=
-                       FlowLayout(w=250, children=[Label(string), Button('OK')]))
+        dia = Dialogue('', x=500, y=550, content=
+                       FlowLayout(w=250, children=[Label(string),
+                                                   Button('OK', action=self.window.button_action)]))
 
         frame.add(dia)
         self.window.push_handlers(frame)
-        frame.draw()
+        self.window.dialogs.append(frame)
 
     def draw_gui(self):
         pyglet.text.Label("Party = %d, %d"

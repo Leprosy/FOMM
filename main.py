@@ -29,6 +29,7 @@ class Game(pyglet.window.Window):
         self.map = None
         self.party = None
         self.gui = gui.Gui(self)
+        self.dialogs = []
 
     def init_game(self):
         #Load or start a new one?
@@ -49,21 +50,29 @@ class Game(pyglet.window.Window):
             #Main menu
             self.gui.draw_mainmenu()
         else:
+            #Clear window
+            self.clear()
+
+            #Map render
+            self.map.render()
+            self.map.check_music()
+
+            #Party
+            self.party.render()
+
+            #Gui
+            self.gui.draw_gui()
+
+            if len(self.dialogs) > 0:
+                for frame in self.dialogs:
+                    frame.draw()
+
             if self.need_update:
                 cfg.debug("Status updated...")
-                #Clear window
-                self.clear()
 
                 self.need_update = False
                 #Game logic
-                #Map render
-                self.map.render()
-                self.map.check_music()
                 #Monsters
-                #Party
-                self.party.render()
-                #gui
-                self.gui.draw_gui()
 
                 #scripts in map
                 script_coord = "%d,%d" % (self.party.x, self.party.y)
@@ -71,24 +80,15 @@ class Game(pyglet.window.Window):
 
                 #alerts, messages, prompts and other user interactions
                 if self.status == cfg._IN_GAME_ALERT:
-                    frame = Frame(Theme('res/gui'),
-                                  w=cfg.resolution[0],
-                                  h=cfg.resolution[1])
-                    dia = Dialogue('Information', x=500, y=550, content=
-                                   FlowLayout(w=250,
-                                              children=[Label(self.message),
-                                                        Button('OK')]))
-
-                    frame.add(dia)
-                    self.push_handlers(frame)
-                    frame.draw()
-
+                    self.gui.alert(self.message)
 
     '''
     Event handlers
     '''
     def button_action(self, button):
-        print button
+        self.dialogs.pop()
+        self.status = cfg._IN_GAME
+        self.need_update = True
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.x = x

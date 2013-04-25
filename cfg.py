@@ -4,7 +4,7 @@ import time
 version = "0.1"
 game_res = "res"
 title = "FOMM"
-resolution = [800, 600]
+resolution = [1024, 640]
 size = 64
 
 #Constants
