@@ -1,5 +1,9 @@
 import pyglet
 import cfg
+
+pyglet.resource.path = [cfg.game_res]
+pyglet.resource.reindex()
+
 import maps
 import player
 import gui
@@ -17,8 +21,6 @@ class Game(pyglet.window.Window):
                                    caption=cfg.title, vsync=False)
         #Environment setup
         cfg.debug("Initializing environment")
-        pyglet.resource.path = [cfg.game_res]
-        pyglet.resource.reindex()
         random.seed()
 
         #Global attributes
@@ -31,11 +33,14 @@ class Game(pyglet.window.Window):
         self.gui = gui.Gui(self)
         self.dialogs = []
 
+        #Main menu
+        self.main_menu = None
+
     def init_game(self):
         #Load or start a new one?
         #New game
         cfg.debug("Starting a new game...")
-        self.map = maps.Map(cfg.game_res + '/maps/map1.json', self)
+        self.map = maps.Map('map1', self)
         self.party = player.Party(1, 5, self)
         self.party.init_chars(cfg.game_res + '/defs/defparty.json')
 

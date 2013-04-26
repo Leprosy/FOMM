@@ -7,8 +7,8 @@ import FOMMscripting
 
 class Map:
     def __init__(self, filename, window):
-        cfg.debug("Opening %s map..." % filename)
-        data = json.load(open(filename))
+        cfg.debug("Opening map %s..." % filename)
+        data = json.load(pyglet.resource.file('maps/%s.json' % filename))
         self.__dict__ = data
 
         self.window = window
@@ -17,9 +17,6 @@ class Map:
         self.scr_coord = None
         self.music_player = None
         self.interpreter = FOMMscripting.Interpreter()
-
-        #Definitions
-        self.defs = json.load(open(filename))
 
         for i in range(0, len(data["floor"])):
             aux = []
@@ -73,8 +70,8 @@ class Map:
 
 class Tile:
     defs = {
-        "floors": json.load(open(cfg.game_res + '/defs/floors.json')),
-        "things": json.load(open(cfg.game_res + '/defs/things.json')),
+        "floors": json.load(pyglet.resource.file('defs/floors.json')),
+        "things": json.load(pyglet.resource.file('defs/things.json')),
     }
     sprites = {
         "floors": [],
@@ -84,13 +81,11 @@ class Tile:
     #init code
     for f in defs["floors"]:
         cfg.debug("Loading %s floor img" % f["name"])
-        img = pyglet.resource.image(cfg.game_res + '/img/floors/%s.png'
-                                    % f["name"])
+        img = pyglet.resource.image('img/floors/%s.png' % f["name"])
         sprites["floors"].append(pyglet.sprite.Sprite(img))
     for f in defs["things"]:
         cfg.debug("Loading %s thing img" % f["name"])
-        img = pyglet.resource.image(cfg.game_res + '/img/things/%s.png'
-                                    % f["name"])
+        img = pyglet.resource.image('img/things/%s.png' % f["name"])
         sprites["things"].append(pyglet.sprite.Sprite(img))
 
     def __init__(self, floor, thing, x, y):

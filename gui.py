@@ -1,11 +1,11 @@
 import pyglet
 import cfg
-from simplui import *
 
 
 class Gui:
     def __init__(self, window):
         self.window = window
+        self.main_menu = None
 
     def alert(self, string):
         cfg.debug("gui.alert:%s" % string)
@@ -37,11 +37,11 @@ class Gui:
               anchor_x="left", anchor_y="top").draw()
 
     def draw_mainmenu(self):
-        pyglet.text.Label("FOMM",
-                          font_name='Arial',
-                          font_size=32,
-                          x=100, y=300,
-                          anchor_x='left', anchor_y='center').draw()
+        if self.main_menu is None:
+            self.main_menu = pyglet.resource.image('gui/title.png')
+
+        self.main_menu.blit(0, 0)
+
         pyglet.text.Label("< Press Spacebar to start >",
                           font_name='Arial',
                           font_size=14,
