@@ -1,0 +1,17 @@
+[
+    {
+        "id": "wildcat",
+        "name": "Wild Cat",
+        "hp": 15
+    },
+    {
+        "id": "orc"
+        "name": "Orc Warrior",
+        "hp": 20
+    },
+    {
+        "id": "troll",
+        "name": "Troll",
+        "hp": 11
+    }
+]

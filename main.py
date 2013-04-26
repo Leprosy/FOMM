@@ -1,8 +1,12 @@
 import pyglet
+from pyglet.gl import *
 import cfg
 
+#init alpha and resources
 pyglet.resource.path = [cfg.game_res]
 pyglet.resource.reindex()
+glEnable(GL_BLEND)
+glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 import maps
 import player
@@ -109,6 +113,7 @@ class Game(pyglet.window.Window):
         #Main menu keys
         if self.status == cfg._IN_MAINMENU:
             if symbol == key.SPACE:
+                self.gui.main_window = None
                 self.init_game()
             if symbol == key.ESCAPE:
                 cfg.debug("We will leave from FOMM now. Cheers!")
