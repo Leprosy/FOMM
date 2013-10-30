@@ -6,7 +6,7 @@ Canvas.HEIGHT = 600;
 Canvas.VIEW_ANGLE = 45;
 Canvas.ASPECT = Canvas.WIDTH / Canvas.HEIGHT;
 Canvas.NEAR = 0.1;
-Canvas.FAR = 10000;
+Canvas.FAR = 20000;
 Canvas.step = 50;
 
 Canvas.walls = [];
@@ -36,11 +36,15 @@ Canvas.init = function() {
     scene.add(light);
 
     // Sky
-    var material = new THREE.MeshBasicMaterial({
-        map: new THREE.ImageUtils.loadTexture('img/cei/day.jpg')
-    });
-    var skybox = new THREE.Mesh(new THREE.CubeGeometry(1000, 1000, 1000), material);
-    scene.add(skybox);
+    var sky = new THREE.Mesh(
+        new THREE.SphereGeometry(10000, 60, 40),
+        new THREE.MeshBasicMaterial({
+            map: THREE.ImageUtils.loadTexture('img/cei/day.jpg'),
+            side: THREE.DoubleSide
+        })
+    );
+
+    scene.add(sky);
 
     // Assign
     Canvas.camera = camera;
