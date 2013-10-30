@@ -32,7 +32,7 @@ Canvas.init = function() {
     $container.append(renderer.domElement);    
 
     // Light
-    var light = new THREE.PointLight(0xFFFFFF, 3, 400);
+    var light = new THREE.PointLight(0xFFFFFF, 3, 300);
     scene.add(light);
 
     // Sky
