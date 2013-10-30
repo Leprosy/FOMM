@@ -20,6 +20,11 @@ Game.loadMap = function() {
 };
 
 Game.start = function() {
+    if (!Game.player || !Game.map) {
+        alert('Load a map & login as a player');
+        return false;
+    }
+
     Game.play = true;
 
     /* Keyboard bind*/

@@ -1,6 +1,6 @@
 var Canvas = {};
 
-// Constants
+// Constants & elements
 Canvas.WIDTH = 768;
 Canvas.HEIGHT = 600;
 Canvas.VIEW_ANGLE = 45;
@@ -8,6 +8,11 @@ Canvas.ASPECT = Canvas.WIDTH / Canvas.HEIGHT;
 Canvas.NEAR = 0.1;
 Canvas.FAR = 10000;
 Canvas.step = 50;
+
+Canvas.walls = [];
+Canvas.floors = [];
+Canvas.ceilings = [];
+Canvas.objects = [];
 
 Canvas.init = function() {
     /* Create a WebGL renderer, camera and a scene */
@@ -25,9 +30,17 @@ Canvas.init = function() {
     scene.add(camera);
     renderer.setSize(Canvas.WIDTH, Canvas.HEIGHT);
     $container.append(renderer.domElement);    
-    
+
+    // Light
     var light = new THREE.PointLight(0xFFFFFF, 3, 400);
     scene.add(light);
+
+    // Sky
+    var material = new THREE.MeshBasicMaterial({
+        map: new THREE.ImageUtils.loadTexture('img/cei/day.jpg')
+    });
+    var skybox = new THREE.Mesh(new THREE.CubeGeometry(1000, 1000, 1000), material);
+    scene.add(skybox);
 
     // Assign
     Canvas.camera = camera;
@@ -68,14 +81,9 @@ Canvas.render = function() {
 }
 
 Canvas.loadMap = function(map) {
-    /* Textures & Objects */
-    var txts = [new THREE.ImageUtils.loadTexture('img/txts/cave1.jpg'),
-                new THREE.ImageUtils.loadTexture('img/txts/cave2.jpg'),
-                new THREE.ImageUtils.loadTexture('img/txts/floor1.jpg'),
-                new THREE.ImageUtils.loadTexture('img/txts/floor2.jpg')];
-
+    /*
     var objs = [new THREE.ImageUtils.loadTexture('img/obj/tree.png'),
-                new THREE.ImageUtils.loadTexture('img/obj/tree2.png')];
+                new THREE.ImageUtils.loadTexture('img/obj/tree2.png')]; */
 
     /* Load a 3D map and make the meshes & sprites */ 
     for (i = 0; i < map.tiles.length; ++i) {
@@ -83,37 +91,65 @@ Canvas.loadMap = function(map) {
 
             /* Walls */
             if (map.tiles[i][j] != 0) {
+                // Load on demand 
+                if (typeof Canvas.walls[map.tiles[i][j] - 1] == 'undefined') {
+                    Canvas.walls[map.tiles[i][j] - 1] = new THREE.ImageUtils.loadTexture('img/wal/' + map.tiles[i][j] + '.jpg');
+                }
+
                 var material = new THREE.MeshLambertMaterial({
-                    map: txts[map.tiles[i][j] - 1]
+                    map: Canvas.walls[map.tiles[i][j] - 1]
                 });
                 var geo = new THREE.CubeGeometry(Canvas.step, Canvas.step, Canvas.step);
-                var mesh1 = new THREE.Mesh(geo, material);
+                var mesh = new THREE.Mesh(geo, material);
 
-                mesh1.position.x = j * Canvas.step;
-                mesh1.position.z = i * Canvas.step * -1;
-                mesh1.position.y = 0;
+                mesh.position.x = j * Canvas.step;
+                mesh.position.z = i * Canvas.step * -1;
+                mesh.position.y = 0;
 
                 // Add the meshes to the scene
-                Canvas.scene.add(mesh1);
-            } else {
-                //Floor & ceiling
-                var material1 = new THREE.MeshLambertMaterial({ map: txts[2] });
-                var material2 = new THREE.MeshLambertMaterial({ map: txts[3] });
-                var geo = new THREE.CubeGeometry(Canvas.step, Canvas.step / 10, Canvas.step);
-                var mesh1 = new THREE.Mesh(geo, material1);
-                var mesh2 = new THREE.Mesh(geo, material2);
-                mesh1.position.x = j * Canvas.step;
-                mesh1.position.z = i * Canvas.step * -1;
-                mesh1.position.y = Canvas.step / -2;
-                mesh2.position = mesh1.position.clone();
-                mesh2.position.y = Canvas.step / 2;
+                Canvas.scene.add(mesh);
+            }
 
-                Canvas.scene.add(mesh1);
-                Canvas.scene.add(mesh2);
+            if (map.floors[i][j] != 0) {
+                if (typeof Canvas.floors[map.floors[i][j] - 1] == 'undefined') {
+                    Canvas.floors[map.floors[i][j] - 1] = new THREE.ImageUtils.loadTexture('img/flr/' + map.floors[i][j] + '.jpg');
+                }
+
+                var material = new THREE.MeshLambertMaterial({
+                    map: Canvas.floors[map.floors[i][j] - 1]
+                });
+                var geo = new THREE.CubeGeometry(Canvas.step, Canvas.step / 10, Canvas.step);
+                var mesh = new THREE.Mesh(geo, material);
+
+                mesh.position.x = j * Canvas.step;
+                mesh.position.z = i * Canvas.step * -1;
+                mesh.position.y = Canvas.step / -2;
+
+                // Add the meshes to the scene
+                Canvas.scene.add(mesh);
+            }
+            
+            if (map.ceilings[i][j] != 0) { 
+                if (typeof Canvas.ceilings[map.ceilings[i][j] - 1] == 'undefined') {
+                    Canvas.ceilings[map.ceilings[i][j] - 1] = new THREE.ImageUtils.loadTexture('img/cei/' + map.ceilings[i][j] + '.jpg');
+                }
+
+                var material = new THREE.MeshLambertMaterial({
+                    map: Canvas.ceilings[map.ceilings[i][j] - 1]
+                });
+                var geo = new THREE.CubeGeometry(Canvas.step, Canvas.step / 10, Canvas.step);
+                var mesh = new THREE.Mesh(geo, material);
+
+                mesh.position.x = j * Canvas.step;
+                mesh.position.z = i * Canvas.step * -1;
+                mesh.position.y = Canvas.step / 2;
+
+                // Add the meshes to the scene
+                Canvas.scene.add(mesh);
             }
 
             /* Objects */
-            if (map.objects[i][j] != 0) {
+            /* if (map.objects[i][j] != 0) {
                 var material = new THREE.SpriteMaterial({
                     map: objs[map.objects[i][j] - 1],
                     useScreenCoordinates: false,
@@ -123,7 +159,7 @@ Canvas.loadMap = function(map) {
                 sprite.position.set(j * Canvas.step, 0, i * Canvas.step * -1);
                 sprite.scale.set(50, 50, 1);
                 Canvas.scene.add(sprite);
-            }
+            } */
         }
     }
 }
