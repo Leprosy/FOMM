@@ -85,10 +85,6 @@ Canvas.render = function() {
 }
 
 Canvas.loadMap = function(map) {
-    /*
-    var objs = [new THREE.ImageUtils.loadTexture('img/obj/tree.png'),
-                new THREE.ImageUtils.loadTexture('img/obj/tree2.png')]; */
-
     /* Load a 3D map and make the meshes & sprites */ 
     for (i = 0; i < map.tiles.length; ++i) {
         for (j = 0; j < map.tiles[i].length; ++j) {
@@ -129,6 +125,10 @@ Canvas.loadMap = function(map) {
                 mesh.position.z = i * Canvas.step * -1;
                 mesh.position.y = Canvas.step / -2;
 
+                if ((i + j) % 2 == 0) {
+                    mesh.rotation.y = Math.PI;
+                }
+
                 // Add the meshes to the scene
                 Canvas.scene.add(mesh);
             }
@@ -148,14 +148,22 @@ Canvas.loadMap = function(map) {
                 mesh.position.z = i * Canvas.step * -1;
                 mesh.position.y = Canvas.step / 2;
 
+                if ((i + j) % 2 == 0) {
+                    mesh.rotation.y = Math.PI;
+                }
+
                 // Add the meshes to the scene
                 Canvas.scene.add(mesh);
             }
 
             /* Objects */
-            /* if (map.objects[i][j] != 0) {
+            if (map.objects[i][j] != 0) {
+                if (typeof Canvas.objects[map.objects[i][j] - 1] == 'undefined') {
+                    Canvas.objects[map.objects[i][j] - 1] = new THREE.ImageUtils.loadTexture('img/obj/' + map.objects[i][j] + '.png');
+                }
+
                 var material = new THREE.SpriteMaterial({
-                    map: objs[map.objects[i][j] - 1],
+                    map: Canvas.objects[map.objects[i][j] - 1],
                     useScreenCoordinates: false,
                     alignment: THREE.SpriteAlignment.center
                 });
@@ -163,7 +171,7 @@ Canvas.loadMap = function(map) {
                 sprite.position.set(j * Canvas.step, 0, i * Canvas.step * -1);
                 sprite.scale.set(50, 50, 1);
                 Canvas.scene.add(sprite);
-            } */
-        }
+            }
+        }   
     }
 }
