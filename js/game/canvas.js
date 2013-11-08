@@ -32,7 +32,7 @@ Canvas.init = function() {
     $container.append(renderer.domElement);    
 
     // Light
-    var light = new THREE.PointLight(0xFFFFFF, 3, 300);
+    var light = new THREE.PointLight(0xFFFFFF, 3, 200);
     scene.add(light);
 
     // Sky
@@ -164,7 +164,8 @@ Canvas.loadMap = function(map) {
 
                 var material = new THREE.MeshLambertMaterial({
                     map: Canvas.objects[map.objects[i][j] - 1],
-                    transparent: true
+                    transparent: true,
+                    color: new THREE.Color(0x666666)
                 });
                 var geo = new THREE.PlaneGeometry(Canvas.step, Canvas.step);
                 var sprite = new THREE.Mesh(geo, material);
