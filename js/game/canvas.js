@@ -77,7 +77,7 @@ Canvas.update = function() {
     Canvas.light.position = Canvas.camera.position;
 
     /* Translation for vision */
-    Canvas.camera.translateZ(50);
+    Canvas.camera.translateZ(Canvas.step);
 }
 
 Canvas.render = function() {
@@ -123,7 +123,7 @@ Canvas.loadMap = function(map) {
 
                 mesh.position.x = j * Canvas.step;
                 mesh.position.z = i * Canvas.step * -1;
-                mesh.position.y = Canvas.step / -2;
+                mesh.position.y = Canvas.step / -2 - Canvas.step / 20;
 
                 if ((i + j) % 2 == 0) {
                     mesh.rotation.y = Math.PI;
@@ -146,7 +146,7 @@ Canvas.loadMap = function(map) {
 
                 mesh.position.x = j * Canvas.step;
                 mesh.position.z = i * Canvas.step * -1;
-                mesh.position.y = Canvas.step / 2;
+                mesh.position.y = Canvas.step / 2 + Canvas.step / 20;
 
                 if ((i + j) % 2 == 0) {
                     mesh.rotation.y = Math.PI;
@@ -162,14 +162,15 @@ Canvas.loadMap = function(map) {
                     Canvas.objects[map.objects[i][j] - 1] = new THREE.ImageUtils.loadTexture('img/obj/' + map.objects[i][j] + '.png');
                 }
 
-                var material = new THREE.SpriteMaterial({
+                var material = new THREE.MeshLambertMaterial({
                     map: Canvas.objects[map.objects[i][j] - 1],
-                    useScreenCoordinates: false,
-                    alignment: THREE.SpriteAlignment.center
+                    transparent: true
                 });
-                var sprite = new THREE.Sprite(material);
+                var geo = new THREE.PlaneGeometry(Canvas.step, Canvas.step);
+                var sprite = new THREE.Mesh(geo, material);
+
                 sprite.position.set(j * Canvas.step, 0, i * Canvas.step * -1);
-                sprite.scale.set(50, 50, 1);
+                sprite.quaternion = Canvas.camera.quaternion;
                 Canvas.scene.add(sprite);
             }
         }   

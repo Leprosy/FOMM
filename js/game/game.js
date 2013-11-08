@@ -4,6 +4,8 @@ var Game = Game || {};
 Game.map = false;
 Game.player = false;
 Game.play = false;
+Game.sound = [];
+Game.sound[0] = new Audio('snd/fx/step.wav');
 
 /* Methods */
 Game.loadPlayer = function() {
@@ -92,11 +94,17 @@ Game._move = function(inc) {
     if (Game.map.tiles[oldY][oldX] == 0) {
         Game.player.x = oldX;
         Game.player.y = oldY;
+
+        Game.sound[0].play();
+    } else {
+        
     }
 }
 Game.rotateLeft = function() {
+    Game.sound[0].play();
     Game.player.direction--; if (Game.player.direction < 0) Game.player.direction = 3;
 }
 Game.rotateRight = function() {
+    Game.sound[0].play();
     Game.player.direction++; if (Game.player.direction > 3) Game.player.direction = 0;
 }

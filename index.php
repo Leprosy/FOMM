@@ -83,10 +83,17 @@ table {
             </div>
         </div>
 
+        <!-- Scripts -->
+        <!-- 3D -->
         <script src="js/jquery.js"></script>
         <script src="js/three/build/three.min.js"></script>
+
+        <!-- Game -->
         <script src="js/game/game.js"></script>
         <script src="js/game/canvas.js"></script>
+
+        <!-- Audio  -->
+        <script src="http://code.createjs.com/soundjs-0.5.0.min.js"></script>
 
         <script>
             Canvas.init();
