@@ -14,7 +14,7 @@ Canvas.walls = [];
 Canvas.floors = [];
 Canvas.ceilings = [];
 Canvas.objects = [];
-Canvas.animated_textures = {};
+Canvas.mustRender = false;
 
 Canvas.time = 0;
 
@@ -66,18 +66,23 @@ Canvas.animate = function() {
 
     var time = new Date().getTime();
 
-    if (time > Canvas.time + 200) {
+    if (time > Canvas.time + 500) {
         Canvas.time = time;
 
         // Elements update
         Canvas.update();
-    
-        // Render scene
+        Canvas.mustRender = true;
+    }
+
+    // Render scene
+    if (Canvas.mustRender) {
+        Canvas.updateCamera();
         Canvas.render();
+        Canvas.mustRender = false;
     }
 }
 
-Canvas.update = function() {
+Canvas.updateCamera = function() {
     /* Camera rotation */
     Canvas.camera.rotation.y = -Game.player.direction * (Math.PI / 2);
 
@@ -88,7 +93,9 @@ Canvas.update = function() {
 
     /* Translation for vision */
     Canvas.camera.translateZ(Canvas.step);
+}
 
+Canvas.update = function() {
     /* Animated textures */
     for (i in Canvas.objects) {
         if (Canvas.objects[i].image.width > Canvas.objWidth) {

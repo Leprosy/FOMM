@@ -96,15 +96,17 @@ Game._move = function(inc) {
         Game.player.y = oldY;
 
         Game.sound[0].play();
-    } else {
-        
+
+        Canvas.mustRender = true;
     }
 }
 Game.rotateLeft = function() {
     Game.sound[0].play();
     Game.player.direction--; if (Game.player.direction < 0) Game.player.direction = 3;
+    Canvas.mustRender = true;
 }
 Game.rotateRight = function() {
     Game.sound[0].play();
     Game.player.direction++; if (Game.player.direction > 3) Game.player.direction = 0;
+    Canvas.mustRender = true;
 }
