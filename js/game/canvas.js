@@ -3,7 +3,7 @@ var Canvas = {};
 // Constants & elements
 Canvas.WIDTH = 768;
 Canvas.HEIGHT = 600;
-Canvas.VIEW_ANGLE = 45;
+Canvas.VIEW_ANGLE = 35;
 Canvas.ASPECT = Canvas.WIDTH / Canvas.HEIGHT;
 Canvas.NEAR = 0.1;
 Canvas.FAR = 20000;
@@ -99,7 +99,7 @@ Canvas.loadMap = function(map) {
                 var material = new THREE.MeshLambertMaterial({
                     map: Canvas.walls[map.tiles[i][j] - 1]
                 });
-                var geo = new THREE.CubeGeometry(Canvas.step, Canvas.step, Canvas.step);
+                var geo = new THREE.CubeGeometry(Canvas.step, Canvas.step * 0.6, Canvas.step);
                 var mesh = new THREE.Mesh(geo, material);
 
                 mesh.position.x = j * Canvas.step;
@@ -123,7 +123,7 @@ Canvas.loadMap = function(map) {
 
                 mesh.position.x = j * Canvas.step;
                 mesh.position.z = i * Canvas.step * -1;
-                mesh.position.y = Canvas.step / -2 - Canvas.step / 20;
+                mesh.position.y = -Canvas.step * 0.3 - Canvas.step / 20;
 
                 if ((i + j) % 2 == 0) {
                     mesh.rotation.y = Math.PI;
@@ -146,7 +146,7 @@ Canvas.loadMap = function(map) {
 
                 mesh.position.x = j * Canvas.step;
                 mesh.position.z = i * Canvas.step * -1;
-                mesh.position.y = Canvas.step / 2 + Canvas.step / 20;
+                mesh.position.y = Canvas.step * 0.3 + Canvas.step / 20;
 
                 if ((i + j) % 2 == 0) {
                     mesh.rotation.y = Math.PI;
@@ -167,10 +167,10 @@ Canvas.loadMap = function(map) {
                     transparent: true,
                     color: new THREE.Color(0x666666)
                 });
-                var geo = new THREE.PlaneGeometry(Canvas.step, Canvas.step);
+                var geo = new THREE.PlaneGeometry(Canvas.step * 0.5, Canvas.step * 0.5);
                 var sprite = new THREE.Mesh(geo, material);
 
-                sprite.position.set(j * Canvas.step, 0, i * Canvas.step * -1);
+                sprite.position.set(j * Canvas.step, -Canvas.step / 20, i * Canvas.step * -1);
                 sprite.quaternion = Canvas.camera.quaternion;
                 Canvas.scene.add(sprite);
             }
