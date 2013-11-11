@@ -8,11 +8,15 @@ Canvas.ASPECT = Canvas.WIDTH / Canvas.HEIGHT;
 Canvas.NEAR = 0.1;
 Canvas.FAR = 20000;
 Canvas.step = 50;
+Canvas.objWidth = 400;
 
 Canvas.walls = [];
 Canvas.floors = [];
 Canvas.ceilings = [];
 Canvas.objects = [];
+Canvas.animated_textures = {};
+
+Canvas.time = 0;
 
 Canvas.init = function() {
     /* Create a WebGL renderer, camera and a scene */
@@ -60,11 +64,17 @@ Canvas.animate = function() {
         requestAnimationFrame(Canvas.animate);
     }
 
-    // Elements update
-    Canvas.update();
+    var time = new Date().getTime();
 
-    // Render scene
-    Canvas.render();
+    if (time > Canvas.time + 200) {
+        Canvas.time = time;
+
+        // Elements update
+        Canvas.update();
+    
+        // Render scene
+        Canvas.render();
+    }
 }
 
 Canvas.update = function() {
@@ -78,6 +88,19 @@ Canvas.update = function() {
 
     /* Translation for vision */
     Canvas.camera.translateZ(Canvas.step);
+
+    /* Animated textures */
+    for (i in Canvas.objects) {
+        if (Canvas.objects[i].image.width > Canvas.objWidth) {
+            var offset = Canvas.objects[i].offset.x + Canvas.objWidth / Canvas.objects[i].image.width;
+
+            if (offset >= 1) {
+                Canvas.objects[i].offset.x = 0;
+            } else{
+                Canvas.objects[i].offset.x = offset;
+            }
+        }
+    }
 }
 
 Canvas.render = function() {
@@ -159,7 +182,13 @@ Canvas.loadMap = function(map) {
             /* Objects */
             if (map.objects[i][j] != 0) {
                 if (typeof Canvas.objects[map.objects[i][j] - 1] == 'undefined') {
-                    Canvas.objects[map.objects[i][j] - 1] = new THREE.ImageUtils.loadTexture('img/obj/' + map.objects[i][j] + '.png');
+                    var texture = new THREE.ImageUtils.loadTexture('img/obj/' + map.objects[i][j] + '.png', null, function(txt) {
+                        if (txt.image.width > Canvas.objWidth) {
+                            txt.repeat.x = Canvas.objWidth / txt.image.width;
+                        }
+                    });
+
+                    Canvas.objects[map.objects[i][j] - 1] = texture;
                 }
 
                 var material = new THREE.MeshLambertMaterial({
@@ -173,7 +202,8 @@ Canvas.loadMap = function(map) {
                 sprite.position.set(j * Canvas.step, -Canvas.step / 20, i * Canvas.step * -1);
                 sprite.quaternion = Canvas.camera.quaternion;
                 Canvas.scene.add(sprite);
+S = sprite;
             }
-        }   
+        }
     }
 }
