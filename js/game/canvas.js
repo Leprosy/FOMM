@@ -14,6 +14,7 @@ Canvas.walls = [];
 Canvas.floors = [];
 Canvas.ceilings = [];
 Canvas.objects = [];
+Canvas.monsters = [];
 Canvas.mustRender = false;
 
 Canvas.time = 0;
@@ -96,15 +97,27 @@ Canvas.updateCamera = function() {
 }
 
 Canvas.update = function() {
-    /* Animated textures */
+    /* Animated textures & monsters */
     for (i in Canvas.objects) {
         if (Canvas.objects[i].image.width > Canvas.objWidth) {
             var offset = Canvas.objects[i].offset.x + Canvas.objWidth / Canvas.objects[i].image.width;
 
             if (offset >= 1) {
                 Canvas.objects[i].offset.x = 0;
-            } else{
+            } else {
                 Canvas.objects[i].offset.x = offset;
+            }
+        }
+    }
+
+    for (i in Canvas.monsters) {
+        if (Canvas.monsters[i].image.width > Canvas.objWidth) {
+            var offset = Canvas.monsters[i].offset.x + Canvas.objWidth / Canvas.monsters[i].image.width;
+
+            if (offset >= 1) {
+                Canvas.monsters[i].offset.x = 0;
+            } else {
+                Canvas.monsters[i].offset.x = offset;
             }
         }
     }
@@ -210,6 +223,31 @@ Canvas.loadMap = function(map) {
                 sprite.quaternion = Canvas.camera.quaternion;
                 Canvas.scene.add(sprite);
 S = sprite;
+            }
+
+            /* Monsters */
+            if (map.monsters[i][j] != 0) {
+                if (typeof Canvas.monsters[map.monsters[i][j] - 1] == 'undefined') {
+                    var texture = new THREE.ImageUtils.loadTexture('img/mon/' + map.monsters[i][j] + '.png', null, function(txt) {
+                        if (txt.image.width > Canvas.objWidth) {
+                            txt.repeat.x = Canvas.objWidth / txt.image.width;
+                        }
+                    });
+
+                    Canvas.monsters[map.monsters[i][j] - 1] = texture;
+                }
+
+                var material = new THREE.MeshLambertMaterial({
+                    map: Canvas.monsters[map.monsters[i][j] - 1],
+                    transparent: true,
+                    color: new THREE.Color(0x666666)
+                });
+                var geo = new THREE.PlaneGeometry(Canvas.step * 0.5, Canvas.step * 0.5);
+                var sprite = new THREE.Mesh(geo, material);
+
+                sprite.position.set(j * Canvas.step, -Canvas.step / 20, i * Canvas.step * -1);
+                sprite.quaternion = Canvas.camera.quaternion;
+                Canvas.scene.add(sprite);
             }
         }
     }

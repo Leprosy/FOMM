@@ -1,5 +1,19 @@
 var Game = Game || {};
 
+/* Definitions */
+Game.monsters = [
+    {
+        name: "Goblin",
+        hp: 20,
+        object: 10
+    },
+    {
+        name: "Orc",
+        hp: 30,
+        object: 11
+    },
+];
+
 /* Items */
 Game.map = false;
 Game.player = false;
