@@ -1,0 +1,10 @@
+requirejs.config({});
+/* requirejs.onError = function (err) {
+    console.error("FATAL ERROR", err);
+}; */
+
+// Start the main app logic.
+requirejs(['game/player', 'game/monster', 'game/main', 'jquery'], function (Player, Monster, Main) {
+    Main.init();
+    $('#debug').html('Loaded');
+});
